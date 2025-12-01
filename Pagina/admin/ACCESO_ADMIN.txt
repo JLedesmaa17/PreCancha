@@ -1,0 +1,147 @@
+# 🔐 ACCESO AL PANEL DE ADMINISTRACIÓN
+
+## 📍 URL de Acceso
+
+```
+http://localhost/TRABAJO\ 3/Pagina/admin/index.php
+```
+
+O simplemente:
+```
+http://localhost/precancha/admin/
+```
+
+## 👤 Credenciales de Admin
+
+### Cuenta Predefinida
+
+**Email**: `admin@precancha.com`  
+**Contraseña**: `admin123`
+
+### Pasos para Acceder
+
+1. Ir a la página de login: `login.php`
+2. Ingresar las credenciales de admin
+3. Se redirige automáticamente a `admin/index.php`
+4. ¡Acceso concedido al panel!
+
+---
+
+## 🎯 Funcionalidades del Panel Admin
+
+### 1. 📊 Dashboard (index.php)
+- Vista general del sistema
+- Estadísticas en tiempo real:
+  - Total de usuarios
+  - Canchas disponibles
+  - Reservas activas
+  - Pendientes de confirmar
+- Últimas reservas registradas
+- Acciones rápidas (confirmar/rechazar)
+
+### 2. 📅 Gestión de Reservas (reservas.php)
+- Ver todas las reservas
+- Filtrar por estado (todas, pendientes, confirmadas)
+- Confirmar reservas pendientes
+- Rechazar reservas pendientes
+- Cancelar reservas confirmadas
+- Ver detalles: usuario, cancha, fecha, horario, monto
+
+### 3. 🏟️ Gestión de Canchas (canchas.php)
+- Ver todas las canchas
+- Cambiar estado:
+  - ✅ Disponible
+  - 🔧 Mantenimiento
+  - ❌ Inactiva
+- Actualizar precio por hora
+- Ver información completa de cada cancha
+
+### 4. 👥 Gestión de Usuarios (usuarios.php)
+- Listar todos los usuarios
+- Ver información:
+  - Nombre, email, teléfono
+  - Rol (admin/usuario)
+  - Estado (activo/inactivo)
+  - Fecha de registro
+  - Último acceso
+- Estadísticas de usuarios
+
+### 5. 📈 Reportes (reportes.php)
+- Estadísticas generales
+- Ingresos totales
+- Promedio por reserva
+- Reservas por estado (gráfico)
+- Canchas más reservadas
+- Usuarios más activos
+
+---
+
+## 🔒 Seguridad
+
+✅ **Protecciones Implementadas**:
+- Solo usuarios con rol "admin" pueden acceder
+- Sesión requerida
+- Validación en servidor
+- Prepared statements (sin inyección SQL)
+
+---
+
+## ⚠️ Cambios Importantes
+
+**RECOMENDADO**: Cambiar la contraseña del admin después de instalar:
+
+1. Acceder al panel
+2. Editar contraseña (futuro)
+3. Usar una contraseña fuerte
+
+---
+
+## 🚀 Navegación del Panel
+
+Desde cualquier página del panel admin, puedes:
+- Ver la barra lateral izquierda
+- Navegar a cualquier sección
+- Cerrar sesión con un click
+
+**Menú disponible**:
+```
+⚙️ ADMIN
+├── 📊 Dashboard
+├── 📅 Reservas
+├── 🏟️ Canchas
+├── 👥 Usuarios
+├── 📈 Reportes
+└── 🚪 Salir
+```
+
+---
+
+## 💡 Consejos de Uso
+
+1. **Revisar pendientes**: Verifica regularmente las reservas pendientes
+2. **Actualizar precios**: Mantén actualizado el precio de las canchas
+3. **Monitorear usuarios**: Controla el crecimiento del sistema
+4. **Generar reportes**: Revisa estadísticas para tomar decisiones
+5. **Mantener canchas**: Marca en mantenimiento cuando sea necesario
+
+---
+
+## ❌ Solución de Problemas
+
+### "No puedo acceder al panel"
+- ✓ Verificar que estés usando credenciales de admin
+- ✓ Asegúrate de tener rol "admin"
+- ✓ Limpia cookies/caché del navegador
+
+### "Me dice 'No autorizado'"
+- ✓ Solo administradores pueden acceder
+- ✓ Inicia sesión con cuenta de admin
+
+### "Las acciones no se guardan"
+- ✓ Verifica conexión a base de datos
+- ✓ Revisa permisos de la BD
+
+---
+
+**Versión**: 1.0.0  
+**Última actualización**: Diciembre 2025

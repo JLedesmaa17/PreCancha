@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRE-CANCHA - Sistema de Reservas de Canchas de Fútbol</title>
+    <meta name="description" content="Reserva tu cancha de fútbol online. Sistema digital de gestión y reservas en tiempo real.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #DAA520;
+            --color-secondary: #FFD700;
+            --color-bg-dark: #000000;
+            --color-bg-light: #1a1a1a;
+            --color-text: #ffffff;
+            --color-text-muted: #cccccc;
+            --color-success: #00ff00;
+            --color-danger: #ff4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+            color: var(--color-text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(218, 165, 32, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(218, 165, 32, 0.5);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(218, 165, 32, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--color-secondary);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-secondary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            margin-top: 80px;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(218, 165, 32, 0.1) 0%, transparent 70%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(218, 165, 32, 0.05) 49%, rgba(218, 165, 32, 0.05) 51%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(218, 165, 32, 0.05) 49%, rgba(218, 165, 32, 0.05) 51%, transparent 51%);
+            background-size: 60px 60px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-primary));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s infinite linear;
+            line-height: 1.2;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .hero .subtitle {
+            font-size: 28px;
+            color: var(--color-text-muted);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--color-text-muted);
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-bg-dark);
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 5px 20px rgba(218, 165, 32, 0.2);
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(218, 165, 32, 0.1);
+            border-color: var(--color-secondary);
+            color: var(--color-secondary);
+        }
+
+        /* STATS SECTION */
+        .stats-section {
+            padding: 60px 20px;
+            background: rgba(218, 165, 32, 0.05);
+            border-top: 1px solid rgba(218, 165, 32, 0.2);
+            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CANCHAS SECTION */
+        .canchas-section {
+            padding: 100px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-description {
+            text-align: center;
+            font-size: 18px;
+            color: var(--color-text-muted);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .canchas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .cancha-card {
+            background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+            border: 2px solid var(--color-primary);
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .cancha-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.15) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s;
+        }
+
+        .cancha-card:hover::before {
+            transform: scale(1);
+        }
+
+        .cancha-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(218, 165, 32, 0.5);
+            border-color: var(--color-secondary);
+        }
+
+        .cancha-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(218, 165, 32, 0.4);
+        }
+
+        .cancha-icon {
+            font-size: 80px;
+            margin: 20px 0;
+            display: block;
+            text-align: center;
+        }
+
+        .cancha-type {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cancha-info {
+            color: var(--color-text-muted);
+            margin: 12px 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cancha-features {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 14px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .disponible {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--color-success);
+            border: 2px solid var(--color-success);
+        }
+
+        .btn-reservar {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-bg-dark);
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reservar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(218, 165, 32, 0.5);
+        }
+
+        /* FEATURES SECTION */
+        .features {
+            padding: 100px 20px;
+            background: rgba(218, 165, 32, 0.05);
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border: 2px solid transparent;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-item:hover::before {
+            opacity: 1;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(218, 165, 32, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 70px;
+            margin-bottom: 25px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .feature-item:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-item h3 {
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .feature-item p {
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1), rgba(255, 215, 0, 0.05));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '⚽';
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            color: var(--color-text-muted);
+            margin-bottom: 40px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--color-bg-dark);
+            padding: 60px 20px 30px;
+            border-top: 2px solid var(--color-primary);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--color-secondary);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-secondary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(218, 165, 32, 0.2);
+            color: var(--color-text-muted);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cancha-card {
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .cancha-card:nth-child(1) { animation-delay: 0.1s; }
+        .cancha-card:nth-child(2) { animation-delay: 0.2s; }
+        .cancha-card:nth-child(3) { animation-delay: 0.3s; }
+        .cancha-card:nth-child(4) { animation-delay: 0.4s; }
+        .cancha-card:nth-child(5) { animation-delay: 0.5s; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero .subtitle {
+                font-size: 22px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .canchas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .cta-section h2 {
+                font-size: 36px;
+            }
+
+            .cta-container {
+                flex-direction: column;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* SCROLL TO TOP BUTTON */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-bg-dark);
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(218, 165, 32, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo" onclick="scrollToTop()">⚽ PRE-CANCHA</div>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#canchas">Canchas</a></li>
+                <li><a href="#features">Características</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>PRE-CANCHA</h1>
+            <p class="subtitle">Sistema Digital de Gestión y Reserva</p>
+            <p>
+                Reserva tu cancha de fútbol de forma rápida, fácil y segura. 
+                Disponibilidad en tiempo real, confirmación instantánea y la mejor experiencia para tu partido.
+            </p>
+            <div class="cta-container">
+                <button class="cta-button" onclick="scrollToCanchas()">
+                    🏟️ Ver Canchas Disponibles
+                </button>
+                <button class="cta-button secondary" onclick="scrollTo('#features')">
+                    ℹ️ Más Información
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Canchas Disponibles</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Atención Online</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Reserva Garantizada</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">⚡</div>
+                <div class="stat-label">Confirmación Instantánea</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="canchas-section" id="canchas">
+        <h2 class="section-title">Nuestras Canchas</h2>
+        <p class="section-description">
+            Contamos con canchas de última generación con césped sintético de alta calidad, 
+            iluminación LED y vestuarios completos para tu comodidad.
+        </p>
+        <div class="canchas-grid" id="canchasGrid">
+            <!-- Se generan con JavaScript -->
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">¿Por qué elegirnos?</h2>
+        <p class="section-description">
+            Ofrecemos la mejor experiencia en reserva de canchas con tecnología de punta y atención personalizada.
+        </p>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">📅</div>
+                <h3>Reservas en Tiempo Real</h3>
+                <p>Consulta la disponibilidad al instante y reserva tu turno en segundos. Sistema actualizado las 24 horas.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🗺️</div>
+                <h3>Ubicación GPS</h3>
+                <p>Encuentra fácilmente nuestras canchas con integración de mapas y coordenadas precisas.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <h3>Diseño Responsive</h3>
+                <p>Accede desde cualquier dispositivo: celular, tablet o computadora con la misma experiencia.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <h3>Confirmación Instantánea</h3>
+                <p>Recibe la confirmación de tu reserva al momento por WhatsApp y email.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💡</div>
+                <h3>Iluminación LED</h3>
+                <p>Todas nuestras canchas cuentan con iluminación LED profesional para partidos nocturnos.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🚿</div>
+                <h3>Vestuarios Completos</h3>
+                <p>Duchas con agua caliente, casilleros y espacios amplios para tu comodidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>¿Listo para jugar?</h2>
+            <p>
+                No pierdas más tiempo buscando cancha. Reserva ahora y asegura tu lugar 
+                para el próximo partido con tus amigos.
+            </p>
+            <button class="cta-button" onclick="scrollToCanchas()">
+                🎯 Reservar Ahora
+            </button>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>⚽ PRE-CANCHA</h3>
+                <p>Sistema digital de gestión y reserva de canchas de fútbol.</p>
+                <p style="margin-top: 20px;">Tu partido, nuestra pasión.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <a href="mailto:info@precancha.com">📧 info@precancha.com</a>
+                <a href="tel:+541112345678">📞 +54 11 1234-5678</a>
+                <a href="#">📱 WhatsApp: +54 11 1234-5678</a>
+            </div>
+            <div class="footer-section">
+                <h3>Horarios</h3>
+                <p>Lunes a Domingo</p>
+                <p>09:00 - 23:00 hs</p>
+                <p style="margin-top: 15px;">📍 Buenos Aires, Argentina</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces</h3>
+                <a href="#inicio">Inicio</a>
+                <a href="#canchas">Canchas</a>
+                <a href="#features">Características</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 PRE-CANCHA - Sistema de Gestión de Reservas | Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // ============================================
+        // DATOS DE CANCHAS
+        // ============================================
+        const canchas = [
+            { 
+                numero: 1, 
+                tipo: 'Fútbol 5', 
+                jugadores: 10, 
+                superficie: 'Césped Sintético Premium', 
+                icon: '⚽',
+                descripcion: 'Ideal para partidos rápidos'
+            },
+            { 
+                numero: 2, 
+                tipo: 'Fútbol 5', 
+                jugadores: 10, 
+                superficie: 'Césped Sintético Premium', 
+                icon: '⚽',
+                descripcion: 'Ideal para partidos rápidos'
+            },
+            { 
+                numero: 3, 
+                tipo: 'Fútbol 5', 
+                jugadores: 10, 
+                superficie: 'Césped Sintético Premium', 
+                icon: '⚽',
+                descripcion: 'Ideal para partidos rápidos'
+            },
+            { 
+                numero: 4, 
+                tipo: 'Fútbol 5', 
+                jugadores: 10, 
+                superficie: 'Césped Sintético Premium', 
+                icon: '⚽',
+                descripcion: 'Ideal para partidos rápidos'
+            },
+            { 
+                numero: 5, 
+                tipo: 'Fútbol 8', 
+                jugadores: 16, 
+                superficie: 'Césped Sintético Profesional', 
+                icon: '🏟️',
+                descripcion: 'Perfecta para equipos grandes'
+            }
+        ];
+
+        // ============================================
+        // GENERAR CARDS DE CANCHAS
+        // ============================================
+        const canchasGrid = document.getElementById('canchasGrid');
+
+        canchas.forEach((cancha) => {
+            const card = document.createElement('div');
+            card.className = 'cancha-card';
+            card.innerHTML = `
+                <div class="cancha-number">${cancha.numero}</div>
+                <div class="cancha-icon">${cancha.icon}</div>
+                <div class="cancha-type">${cancha.tipo}</div>
+                <div class="cancha-features">
+                    <div class="cancha-info">
+                        <span>👥</span>
+                        <span>${cancha.jugadores} jugadores (${cancha.jugadores/2} vs ${cancha.jugadores/2})</span>
+                    </div>
+                    <div class="cancha-info">
+                        <span>🌱</span>
+                        <span>${cancha.superficie}</span>
+                    </div>
+                    <div class="cancha-info">
+                        <span>💡</span>
+                        <span>Iluminación LED Profesional</span>
+                    </div>
+                    <div class="cancha-info">
+                        <span>🚿</span>
+                        <span>Vestuarios con duchas</span>
+                    </div>
+                </div>
+                <span class="estado disponible">✓ Disponible para reservar</span>
+                <button class="btn-reservar" onclick="reservarCancha(${cancha.numero})">
+                    📅 Reservar Turno
+                </button>
+            `;
+            
+            canchasGrid.appendChild(card);
+        });
+
+        // ============================================
+        // FUNCIÓN PARA RESERVAR CANCHA
+        // ============================================
+        function reservarCancha(numeroCancha) {
+            const cancha = canchas.find(c => c.numero === numeroCancha);
+            if (cancha) {
+                // Guardar cancha seleccionada en sessionStorage
+                sessionStorage.setItem('canchaSeleccionada', JSON.stringify(cancha));
+                
+                // Redirigir a página de reservas
+                window.location.href = 'reservas.html';
+            }
+        }
+
+        // ============================================
+        // SCROLL SUAVE
+        // ============================================
+        function scrollTo(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToCanchas() {
+            scrollTo('#canchas');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // HEADER SCROLL EFFECT
+        // ============================================
+        let lastScroll = 0;
+        const header = document.getElementById('header');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // ============================================
+        // SCROLL TO TOP BUTTON
+        // ============================================
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        // ============================================
+        // INTERSECTION OBSERVER PARA ANIMACIONES
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos
+        document.querySelectorAll('.feature-item, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // ============================================
+        // SMOOTH SCROLL PARA ENLACES
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ============================================
+        // ANIMACIÓN DE NÚMEROS EN STATS
+        // ============================================
+        function animateNumbers() {
+            const stats = document.querySelectorAll('.stat-number');
+            
+            stats.forEach(stat => {
+                const text = stat.textContent;
+                if (!isNaN(text)) {
+                    const target = parseInt(text);
+                    let current = 0;
+                    const increment = target / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            stat.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 30);
+                }
+            });
+        }
+
+        // Animar números cuando la sección sea visible
+        const statsSection = document.querySelector('.stats-section');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // ============================================
+        // PARALLAX EFFECT EN HERO
+        // ============================================
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < 1000) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = Math.max(0, 1 - scrolled / 600);
+            }
+        });
+
+        // ============================================
+        // PRELOAD - LIMPIAR STORAGE AL CARGAR
+        // ============================================
+        window.addEventListener('load', () => {
+            // Limpiar selección previa si venimos de otra página
+            if (!document.referrer.includes('reservas.html')) {
+                sessionStorage.removeItem('canchaSeleccionada');
+            }
+        });
+
+        // ============================================
+        // EASTER EGG - CLICK EN LOGO
+        // ============================================
+        let clickCount = 0;
+        document.querySelector('.logo').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                alert('⚽ ¡Amamos el fútbol tanto como vos! 🏆');
+                clickCount = 0;
+            }
+        });
+    </script>
+</body>
+</html>

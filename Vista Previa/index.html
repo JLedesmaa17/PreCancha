@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRE-CANCHA - Sistema de Reservas</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header>
+        <nav>
+            <div class="logo">PRE-CANCHA</div>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li id="misReservasLink" style="display: none;">
+                    <a href="mis_reservas.html">Mis Reservas</a>
+                </li>
+                <li id="solicitudesLink" style="display: none;">
+                    <a href="solicitudes.html">Solicitudes</a>
+                </li>
+                <li id="adminLink" style="display: none;">
+                    <a href="admin.html">Panel Admin</a>
+                </li>
+                <li id="loginLink"><a href="login.html">Iniciar Sesión</a></li>
+                <li id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                </li>
+                <li id="logoutBtn" style="display: none;">
+                    <button onclick="doLogout()" style="background: #DAA520; color: #000; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">Cerrar Sesión</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Sección de Bienvenida -->
+            <div id="bienvenida" style="display: none;" class="bienvenida">
+                <h2>Bienvenido a PRE-CANCHA</h2>
+                <p>Hola <span id="nombreUsuario" class="usuario-info"></span>, selecciona una cancha para hacer tu reserva</p>
+            </div>
+
+            <!-- Sección de Login requerido -->
+            <div id="loginRequerido" class="bienvenida" style="background: rgba(255, 68, 68, 0.1); border-color: #f44;">
+                <h2 style="color: #f44;">Se requiere iniciar sesión</h2>
+                <p>Debes <a href="login.html" style="color: #FFD700; text-decoration: underline;">iniciar sesión</a> para ver las canchas disponibles y hacer reservas.</p>
+            </div>
+
+            <!-- Grid de Canchas -->
+            <div id="gridCanchas" class="grid-canchas" style="display: none;"></div>
+        </div>
+    </main>
+
+    <!-- Modal de Reserva -->
+    <div id="modalReserva" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reservar Cancha</h2>
+            <div id="detallesCancha"></div>
+            <form id="formReserva" onsubmit="procesarReserva(event)">
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="horario">Horario:</label>
+                    <select id="horario" required>
+                        <option value="">Selecciona un horario</option>
+                        <option value="08:00">08:00 - 09:00</option>
+                        <option value="09:00">09:00 - 10:00</option>
+                        <option value="10:00">10:00 - 11:00</option>
+                        <option value="11:00">11:00 - 12:00</option>
+                        <option value="12:00">12:00 - 13:00</option>
+                        <option value="13:00">13:00 - 14:00</option>
+                        <option value="14:00">14:00 - 15:00</option>
+                        <option value="15:00">15:00 - 16:00</option>
+                        <option value="16:00">16:00 - 17:00</option>
+                        <option value="17:00">17:00 - 18:00</option>
+                        <option value="18:00">18:00 - 19:00</option>
+                        <option value="19:00">19:00 - 20:00</option>
+                        <option value="20:00">20:00 - 21:00</option>
+                        <option value="21:00">21:00 - 22:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="observaciones">Observaciones:</label>
+                    <textarea id="observaciones" rows="3"></textarea>
+                </div>
+                <div id="mensajeReserva" class="alert" style="display: none;"></div>
+                <button type="submit" class="btn-primario">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PRE-CANCHA. Todos los derechos reservados. | Sistema de Reservas de Canchas</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        let canchaSelecionada = null;
+
+        // Mostrar/ocultar contenido según sesión
+        function cargarPagina() {
+            const gridCanchas = document.getElementById('gridCanchas');
+            const bienvenida = document.getElementById('bienvenida');
+            const loginRequerido = document.getElementById('loginRequerido');
+
+            if (session.isLogged()) {
+                const sesion = session.getSession();
+                document.getElementById('nombreUsuario').textContent = sesion.nombre;
+                document.getElementById('userName').textContent = sesion.nombre;
+                
+                // Mostrar sección de bienvenida
+                if (sesion.rol === 'usuario') {
+                    document.getElementById('misReservasLink').style.display = 'block';
+                } else if (sesion.rol === 'admin') {
+                    document.getElementById('solicitudesLink').style.display = 'block';
+                }
+                bienvenida.style.display = 'block';
+                loginRequerido.style.display = 'none';
+                gridCanchas.style.display = 'grid';
+            } else {
+                bienvenida.style.display = 'none';
+                loginRequerido.style.display = 'block';
+                gridCanchas.style.display = 'none';
+                return;
+            }
+
+            // Cargar canchas
+            const canchas = session.getCanchas();
+            gridCanchas.innerHTML = '';
+
+            canchas.forEach(cancha => {
+                const card = document.createElement('div');
+                card.className = 'cancha-card';
+                card.innerHTML = `
+                    <div class="cancha-numero">Cancha ${cancha.numero}</div>
+                    <div class="cancha-tipo">${cancha.tipo}</div>
+                    <div class="cancha-detalle">Tamaño: ${cancha.tamaño}</div>
+                    <div class="cancha-detalle">Estado: <span style="color: #0f0;">${cancha.estado.toUpperCase()}</span></div>
+                    <div class="cancha-precio">$${cancha.precio}/hora</div>
+                    <button class="btn-reservar" onclick="abrirModalReserva(${cancha.id})">Reservar</button>
+                `;
+                gridCanchas.appendChild(card);
+            });
+        }
+
+        // Funciones del modal
+        const modal = document.getElementById('modalReserva');
+        const closeBtn = document.querySelector('.close');
+
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        function abrirModalReserva(canchaid) {
+            canchaSelecionada = canchaid;
+            const cancha = session.getCancha(canchaid);
+            
+            const detalles = document.getElementById('detallesCancha');
+            detalles.innerHTML = `
+                <p><strong>Cancha ${cancha.numero}</strong> - ${cancha.tipo}</p>
+                <p>Precio: <strong>$${cancha.precio}</strong>/hora</p>
+            `;
+
+            // Establecer fecha mínima a hoy
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').value = '';
+            document.getElementById('fecha').min = hoy;
+            document.getElementById('horario').value = '';
+            document.getElementById('observaciones').value = '';
+            document.getElementById('mensajeReserva').style.display = 'none';
+
+            modal.style.display = 'block';
+        }
+
+        function procesarReserva(event) {
+            event.preventDefault();
+
+            const fecha = document.getElementById('fecha').value;
+            const horario = document.getElementById('horario').value;
+            const observaciones = document.getElementById('observaciones').value;
+
+            // Validar fecha en el futuro
+            const fechaObj = new Date(fecha);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            if (fechaObj < hoy) {
+                mostrarMensajeReserva('La fecha debe ser en el futuro', 'error');
+                return;
+            }
+
+            // Crear reserva
+            const resultado = session.crearReserva(canchaSelecionada, fecha, horario, observaciones);
+
+            if (resultado.success) {
+                mostrarMensajeReserva('¡Reserva confirmada exitosamente!', 'success');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    // Recargar la página
+                    location.reload();
+                }, 2000);
+            } else {
+                mostrarMensajeReserva(resultado.message, 'error');
+            }
+        }
+
+        function mostrarMensajeReserva(mensaje, tipo) {
+            const div = document.getElementById('mensajeReserva');
+            div.textContent = mensaje;
+            div.className = 'alert ' + (tipo === 'error' ? 'alert-error' : 'alert-success');
+            div.style.display = 'block';
+        }
+
+        // Cargar contenido al iniciar
+        cargarPagina();
+    </script>
+</body>
+</html>

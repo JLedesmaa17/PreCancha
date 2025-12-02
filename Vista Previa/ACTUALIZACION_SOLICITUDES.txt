@@ -1,0 +1,308 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                    ✅ NUEVA FUNCIONALIDAD AGREGADA ✅                         ║
+║                                                                               ║
+║                  PÁGINA DE SOLICITUDES DE RESERVAS IMPLEMENTADA               ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+🎉 CAMBIOS REALIZADOS
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ SE HA CREADO LA PÁGINA: solicitudes.html
+
+   Funcionalidades:
+   ✓ Ver todas las solicitudes de reservas
+   ✓ Filtrar por estado (Pendientes, Todas, Aprobadas, Rechazadas)
+   ✓ Aprobar solicitudes (cambiar a confirmada)
+   ✓ Rechazar solicitudes (cambiar a rechazada)
+   ✓ Ver estadísticas en tiempo real
+   ✓ Solo para administradores
+   ✓ Información detallada de cada solicitud
+
+
+📝 CAMBIOS EN ARCHIVOS EXISTENTES
+═══════════════════════════════════════════════════════════════════════════════
+
+1. app.js:
+   ✓ Nuevo método: obtenerSolicitudesPendientes()
+   ✓ Nuevo método: aprobarSolicitud(reserva_id)
+   ✓ Nuevo método: rechazarSolicitud(reserva_id)
+   ✓ Las nuevas reservas se crean como "pendiente"
+   ✓ Datos de prueba actualizados con 3 reservas variadas
+
+2. index.html:
+   ✓ Agregado enlace "Solicitudes" (visible solo para admins)
+   ✓ Se muestra solo si eres administrador
+
+3. admin.html:
+   ✓ Agregado enlace "Solicitudes" en la navegación
+   ✓ Fácil acceso desde el panel de administrador
+
+4. SOLICITUDES_INFO.txt:
+   ✓ Documento explicativo con toda la información
+
+
+🚀 CÓMO USAR LAS SOLICITUDES
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: CREAR UNA SOLICITUD (Como usuario)
+  1. Inicia sesión: juan@example.com / 123456
+  2. Haz clic en "Reservar"
+  3. Selecciona fecha y horario
+  4. Confirma → Estado: PENDIENTE
+
+PASO 2: VER SOLICITUDES (Como administrador)
+  1. Inicia sesión: admin@example.com / admin123
+  2. Haz clic en "Solicitudes" en el menú
+  3. Verás todas las solicitudes pendientes
+
+PASO 3: GESTIONAR SOLICITUD (Como administrador)
+  1. En la página de solicitudes
+  2. Haz clic en "✓ Aprobar" para confirmar
+  3. O "✗ Rechazar" para rechazar
+  4. Se actualiza el estado automáticamente
+
+
+📊 SOLICITUDES DISPONIBLES PARA PROBAR
+═══════════════════════════════════════════════════════════════════════════════
+
+Las siguientes solicitudes están disponibles:
+
+1. ID 1 - CONFIRMADA (Ejemplo aprobada)
+   Usuario: Juan Pérez
+   Cancha: 1 (5 vs 5) - $50
+   Fecha: 10 Dic 2025, 10:00-11:00
+   
+2. ID 2 - PENDIENTE (Esperando aprobación)
+   Usuario: Juan Pérez
+   Cancha: 2 (7 vs 7) - $70
+   Fecha: 12 Dic 2025, 16:00-17:00
+   Botones: Aprobar / Rechazar
+
+3. ID 3 - PENDIENTE (Esperando aprobación)
+   Usuario: Carlos López
+   Cancha: 3 (11 vs 11) - $100
+   Fecha: 15 Dic 2025, 14:00-15:00
+   Botones: Aprobar / Rechazar
+
+
+🎯 FLUJO DE LA APLICACIÓN ACTUALIZADO
+═══════════════════════════════════════════════════════════════════════════════
+
+USUARIO:
+  Login
+    ↓
+  Ver Canchas
+    ↓
+  Hacer Reserva → Estado: PENDIENTE
+    ↓
+  Mis Reservas → Ver estado (Pendiente/Confirmada/Rechazada)
+    ↓
+  Esperar aprobación del admin
+
+
+ADMINISTRADOR:
+  Login
+    ↓
+  Solicitudes (nuevo)
+    ↓
+  Ver Solicitudes Pendientes
+    ↓
+  Aprobar / Rechazar
+    ↓
+  Panel Admin → Ver estadísticas actualizadas
+
+
+📍 UBICACIÓN DE ARCHIVOS
+═══════════════════════════════════════════════════════════════════════════════
+
+Vista Previa/
+├── solicitudes.html ← NUEVA PÁGINA
+├── app.js ← ACTUALIZADO
+├── index.html ← ACTUALIZADO
+├── admin.html ← ACTUALIZADO
+├── SOLICITUDES_INFO.txt ← NUEVA GUÍA
+└── ... (resto de archivos)
+
+
+🔍 ESTADOS DE RESERVA
+═══════════════════════════════════════════════════════════════════════════════
+
+PENDIENTE (Amarillo):
+  - La reserva fue creada
+  - Está esperando aprobación del admin
+  - El usuario ve: "PENDIENTE"
+  - El admin puede: Aprobar o Rechazar
+
+CONFIRMADA (Verde):
+  - La reserva fue aprobada por admin
+  - La reserva es válida
+  - El usuario ve: "CONFIRMADA"
+  - El usuario puede cancelarla
+
+RECHAZADA (Rojo):
+  - La reserva fue rechazada por admin
+  - La reserva no es válida
+  - El usuario ve: "RECHAZADA"
+  - El usuario puede hacer nueva reserva
+
+
+📈 ESTADÍSTICAS EN TIEMPO REAL
+═══════════════════════════════════════════════════════════════════════════════
+
+La página de solicitudes muestra en tiempo real:
+
+  Total de Solicitudes: Todas las reservas del sistema
+  Pendientes: Reservas esperando aprobación
+  Aprobadas: Reservas confirmadas
+  Rechazadas: Reservas rechazadas
+
+Estas estadísticas se actualizan automáticamente cuando
+apruebas o rechazas una solicitud.
+
+
+🎨 DISEÑO DE LA PÁGINA
+═══════════════════════════════════════════════════════════════════════════════
+
+Características visuales:
+  ✓ Tarjetas modernas para cada solicitud
+  ✓ Información clara y organizada
+  ✓ Botones grandes y fáciles de usar
+  ✓ Colores indicativos (verde=aprobar, rojo=rechazar)
+  ✓ Estadísticas destacadas
+  ✓ Totalmente responsivo
+  ✓ Consistente con el diseño del sistema
+
+
+💻 COMPATIBILIDAD
+═══════════════════════════════════════════════════════════════════════════════
+
+Funciona en:
+  ✓ Chrome, Firefox, Safari, Edge
+  ✓ Desktop, tablet, móvil
+  ✓ Cualquier navegador moderno
+  ✓ Sin extensiones requeridas
+
+
+🔒 SEGURIDAD Y CONTROL
+═══════════════════════════════════════════════════════════════════════════════
+
+Medidas de seguridad:
+  ✓ Solo administradores pueden acceder
+  ✓ Valida el rol del usuario
+  ✓ Solicita confirmación antes de cambiar estado
+  ✓ Valida que la reserva exista
+  ✓ Valida que sea "pendiente" antes de cambiar
+
+
+✅ CÓMO PROBAR TODO
+═══════════════════════════════════════════════════════════════════════════════
+
+PRUEBA 1: Ver solicitudes existentes
+  1. Abre START.html
+  2. Login: admin@example.com / admin123
+  3. Haz clic en "Solicitudes"
+  4. Verás 3 solicitudes (1 confirmada, 2 pendientes)
+
+PRUEBA 2: Aprobar una solicitud
+  1. En la página de solicitudes
+  2. Haz clic en "✓ Aprobar" en una solicitud pendiente
+  3. Confirma
+  4. El estado cambia a APROBADA
+
+PRUEBA 3: Rechazar una solicitud
+  1. En la página de solicitudes
+  2. Haz clic en "✗ Rechazar" en una solicitud pendiente
+  3. Confirma
+  4. El estado cambia a RECHAZADA
+
+PRUEBA 4: Crear nueva solicitud y aprobarla
+  1. Logout
+  2. Login: juan@example.com / 123456
+  3. Haz clic en "Reservar"
+  4. Crea una nueva reserva
+  5. Logout
+  6. Login: admin@example.com / admin123
+  7. Ve a "Solicitudes"
+  8. Aprueba la nueva solicitud
+  9. Logout
+  10. Login: juan@example.com
+  11. Ve a "Mis Reservas"
+  12. La reserva ahora debe decir "CONFIRMADA"
+
+
+📱 FUNCIONA EN MÓVIL
+═══════════════════════════════════════════════════════════════════════════════
+
+La página es totalmente responsiva:
+  ✓ Se adapta a cualquier tamaño de pantalla
+  ✓ Botones grandes para tocar fácilmente
+  ✓ Texto legible en dispositivos pequeños
+  ✓ Layout flexible y adaptable
+
+
+🎁 BENEFICIOS DE ESTA FUNCIONALIDAD
+═══════════════════════════════════════════════════════════════════════════════
+
+Para Usuarios:
+  ✓ Ven el estado de sus solicitudes
+  ✓ Saben si fue aprobada o rechazada
+  ✓ Pueden hacer nuevas solicitudes
+
+Para Administradores:
+  ✓ Vista centralizada de solicitudes
+  ✓ Pueden aprobar/rechazar reservas
+  ✓ Ver estadísticas en tiempo real
+  ✓ Control total del sistema
+
+
+📊 FLUJO DE DATOS
+═══════════════════════════════════════════════════════════════════════════════
+
+Usuario crea reserva
+        ↓
+  Estado: PENDIENTE
+        ↓
+Admin ve en "Solicitudes"
+        ↓
+    Aprueba/Rechaza
+        ↓
+Estado cambia:
+  CONFIRMADA o RECHAZADA
+        ↓
+Usuario ve en "Mis Reservas"
+
+
+🚀 PRÓXIMOS PASOS (Opcional)
+═══════════════════════════════════════════════════════════════════════════════
+
+Posibles mejoras:
+  - Agregar motivo de rechazo
+  - Notificaciones por correo
+  - Cambiar de parecer (revertir aprobación)
+  - Búsqueda avanzada
+  - Exportar reportes
+  - Historial de cambios
+  - Comentarios en solicitudes
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ IMPLEMENTACIÓN COMPLETADA
+
+La funcionalidad de solicitudes está completamente implementada 
+y lista para usar.
+
+Puedes:
+  1. Crear reservas como usuario
+  2. Ver solicitudes como admin
+  3. Aprobar/rechazar como admin
+  4. Ver cambios en tiempo real
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Más información: Lee SOLICITUDES_INFO.txt
+
+═══════════════════════════════════════════════════════════════════════════════

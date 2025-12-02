@@ -1,0 +1,209 @@
+SISTEMA PRE-CANCHA - GUÍA RÁPIDA DE INICIO
+==========================================
+
+✨ ¡Tu sistema está listo para usar!
+
+ARCHIVOS PRINCIPALES:
+═════════════════════
+
+🎯 INICIO.html           → Página de bienvenida con instrucciones
+🏠 index.html            → Página principal del sistema
+🔑 login.html            → Inicio de sesión
+📝 registro.html         → Crear nueva cuenta
+📋 mis_reservas.html     → Ver y gestionar tus reservas
+👨‍💼 admin.html            → Panel de administrador
+
+⚙️ app.js                → Sistema de sesiones y datos (no editar)
+🎨 estilos.css           → Estilos CSS completos
+
+📖 README.md             → Documentación completa
+📄 INICIO.html           → Esta guía
+
+
+CÓMO EMPEZAR:
+═════════════
+
+1️⃣ Abre "INICIO.html" en tu navegador (doble clic o arrastra)
+2️⃣ Haz clic en "EMPEZAR AHORA" o "INICIAR SESIÓN"
+3️⃣ Usa las cuentas de prueba:
+   
+   Usuario:  juan@example.com / 123456
+   Admin:    admin@example.com / admin123
+
+
+CARACTERÍSTICAS:
+════════════════
+
+✅ Sistema completamente funcional
+✅ Sesiones de usuario persistentes
+✅ Panel de administrador
+✅ Gestión de reservas completa
+✅ Diseño moderno y responsivo
+✅ Sin necesidad de servidor
+✅ Datos guardados en tu navegador
+
+
+RUTAS PRINCIPALES:
+═══════════════════
+
+📌 Usuario Regular:
+   1. Login → Ver canchas → Reservar → Mis reservas → Cancelar
+
+📌 Administrador:
+   1. Login → Panel Admin → Ver estadísticas, reservas, usuarios
+
+📌 Nuevo Usuario:
+   1. Registro → Login → Reservar → Mis reservas
+
+
+DATOS DE PRUEBA:
+════════════════
+
+Canchas Disponibles:
+- Cancha 1: 5 vs 5 ($50/hora)
+- Cancha 2: 7 vs 7 ($70/hora)
+- Cancha 3: 11 vs 11 ($100/hora)
+- Cancha 4: 5 vs 5 ($50/hora)
+- Cancha 5: 7 vs 7 ($70/hora)
+
+Usuarios:
+- juan@example.com (Usuario regular)
+- admin@example.com (Administrador)
+- carlos@example.com (Usuario regular)
+
+
+FUNCIONES USUARIO:
+═══════════════════
+
+❌ Ver canchas disponibles
+❌ Reservar cancha (seleccionando fecha y hora)
+❌ Ver mis reservas
+❌ Cancelar reservas
+❌ Crear nueva cuenta
+
+
+FUNCIONES ADMINISTRADOR:
+════════════════════════
+
+❌ Ver estadísticas del sistema
+❌ Ver todas las reservas
+❌ Ver listado de usuarios
+❌ Ver listado de canchas
+❌ Buscar y filtrar información
+
+
+PREGUNTAS FRECUENTES:
+══════════════════════
+
+P: ¿Dónde se guardan los datos?
+R: En localStorage de tu navegador (persistente mientras no limpies caché)
+
+P: ¿Se borran los datos al cerrar el navegador?
+R: NO, se mantienen en el navegador
+
+P: ¿Qué pasa si limpiar cookies/cache?
+R: Se borran todos los datos del sistema
+
+P: ¿Puedo usar desde otra PC?
+R: NO, los datos son locales de cada navegador
+
+P: ¿Necesito internet?
+R: NO, todo funciona sin conexión
+
+P: ¿Cómo agregar más usuarios?
+R: Usa la página de registro o abre consola (F12) y ejecuta:
+   
+   const u = JSON.parse(localStorage.getItem('usuarios'));
+   u.push({id:999,nombre:'Nuevo',email:'new@mail.com',
+           password:'pass',rol:'usuario'});
+   localStorage.setItem('usuarios',JSON.stringify(u));
+
+
+NAVEGACIÓN RÁPIDA:
+═══════════════════
+
+Desde index.html:
+- Haz clic en "Iniciar Sesión" si no estás autenticado
+- Haz clic en "Mis Reservas" para ver tus reservas
+- Haz clic en "Panel Admin" si eres administrador
+- Haz clic en "Cerrar Sesión" para salir
+
+
+SOLUCIÓN DE PROBLEMAS:
+═══════════════════════
+
+❌ No se guardó mi reserva:
+   → Verifica que hayasnavegado completamente el formulario
+   → Recarga la página y vuelve a intentar
+
+❌ Se borró todo de repente:
+   → Probablemente limpiaste el caché/cookies
+   → Restaurar desde backup no es posible (es local)
+
+❌ No puedo iniciar sesión:
+   → Verifica email exacto (es sensible a mayúsculas)
+   → Usa las cuentas de prueba sugeridas
+
+❌ No veo el panel admin:
+   → Solo aparece si inicias con cuenta admin
+   → Usa admin@example.com
+
+
+ESTRUCTURA DE DATOS:
+═════════════════════
+
+localStorage contiene:
+
+"usuarios" → Array de usuarios con id, nombre, email, password, rol
+"canchas" → Array de canchas con id, número, tipo, precio, estado, tamaño
+"reservas" → Array de reservas con id, usuario_id, cancha_id, fecha, hora, estado
+"session" → Objeto con datos del usuario actualmente logueado
+
+
+TIPS Y TRUCOS:
+══════════════
+
+💡 Abre la consola (F12) para ver y modificar datos:
+   - localStorage.getItem('usuarios')
+   - localStorage.getItem('reservas')
+   - localStorage.clear() para borrar todo
+
+💡 Para crear una reserva, necesitas:
+   - Estar logueado
+   - Seleccionar fecha futura
+   - Seleccionar horario disponible
+
+💡 El panel admin muestra:
+   - Total de reservas y ingresos
+   - Estado de todas las reservas
+   - Información de usuarios
+   - Disponibilidad de canchas
+
+
+VERSIÓN Y INFORMACIÓN:
+═════════════════════
+
+Sistema: PRE-CANCHA HTML v1.0
+Tecnología: HTML5 + CSS3 + JavaScript
+Almacenamiento: localStorage (navegador)
+Responsivo: Sí (móvil, tablet, desktop)
+Fecha: Diciembre 2025
+
+
+PRÓXIMOS PASOS:
+═══════════════
+
+Para convertir a producción:
+1. Agregar backend (PHP, Node.js, Python, etc.)
+2. Implementar base de datos real
+3. Encriptar contraseñas
+4. Usar autenticación segura
+5. Implementar HTTPS
+6. Agregar validaciones del lado del servidor
+
+═════════════════════════════════════════
+
+¡Espero que disfrutes usando PRE-CANCHA!
+¿Preguntas? Revisa el README.md
+
+═════════════════════════════════════════

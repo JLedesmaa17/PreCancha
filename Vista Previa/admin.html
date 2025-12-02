@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - PRE-CANCHA</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header>
+        <nav>
+            <div class="logo">PRE-CANCHA</div>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="solicitudes.html">Solicitudes</a></li>
+                <li><a href="admin.html" style="color: #FFD700;">[ADMIN] Panel</a></li>
+                <li id="userInfo">
+                    <span id="userName"></span>
+                    <span style="color: #ff4444; margin-left: 10px;">[ADMIN]</span>
+                </li>
+                <li id="logoutBtn">
+                    <button onclick="doLogout()" style="background: #DAA520; color: #000; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">Cerrar Sesión</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <h1 style="margin-top: 80px; margin-bottom: 30px; color: #ff4444;">PANEL ADMINISTRADOR</h1>
+
+            <div id="accesoNegado" class="bienvenida" style="background: rgba(255, 68, 68, 0.1); border-color: #f44; display: none;">
+                <h2 style="color: #f44;">Acceso Denegado</h2>
+                <p>Solo los administradores pueden acceder a este panel. <a href="index.html" style="color: #FFD700; text-decoration: underline;">Volver a inicio</a></p>
+            </div>
+
+            <!-- Contenido Admin -->
+            <div id="contenidoAdmin" style="display: none;">
+                <!-- Tabs de secciones -->
+                <div class="tabs-admin">
+                    <button class="tab-admin active" onclick="cambiarSeccion('estadisticas')">Estadísticas</button>
+                    <button class="tab-admin" onclick="cambiarSeccion('reservas')">Todas las Reservas</button>
+                    <button class="tab-admin" onclick="cambiarSeccion('usuarios')">Usuarios</button>
+                    <button class="tab-admin" onclick="cambiarSeccion('canchas')">Canchas</button>
+                </div>
+
+                <!-- Sección: Estadísticas -->
+                <section id="seccion-estadisticas" class="seccion-admin">
+                    <h2>Estadísticas del Sistema</h2>
+                    <div class="grid-estadisticas">
+                        <div class="card-estadistica">
+                            <h3>Total de Reservas</h3>
+                            <p class="numero" id="totalReservas">0</p>
+                        </div>
+                        <div class="card-estadistica">
+                            <h3>Reservas Confirmadas</h3>
+                            <p class="numero" style="color: #0f0;" id="reservasConfirmadas">0</p>
+                        </div>
+                        <div class="card-estadistica">
+                            <h3>Reservas Canceladas</h3>
+                            <p class="numero" style="color: #f44;" id="reservasCanceladas">0</p>
+                        </div>
+                        <div class="card-estadistica">
+                            <h3>Total de Usuarios</h3>
+                            <p class="numero" id="totalUsuarios">0</p>
+                        </div>
+                        <div class="card-estadistica">
+                            <h3>Total de Canchas</h3>
+                            <p class="numero" id="totalCanchas">0</p>
+                        </div>
+                        <div class="card-estadistica">
+                            <h3>Ingreso Total</h3>
+                            <p class="numero" style="color: #0f0;" id="ingresoTotal">$0</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección: Todas las Reservas -->
+                <section id="seccion-reservas" class="seccion-admin" style="display: none;">
+                    <h2>Todas las Reservas</h2>
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="searchReserva" placeholder="Buscar por usuario o cancha..." 
+                               style="padding: 10px; background: #1a1a1a; border: 1px solid #DAA520; color: #fff; border-radius: 5px; width: 300px;"
+                               onkeyup="filtrarTablaReservas()">
+                    </div>
+                    <table class="tabla-admin">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Cancha</th>
+                                <th>Fecha</th>
+                                <th>Horario</th>
+                                <th>Estado</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyReservas">
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección: Usuarios -->
+                <section id="seccion-usuarios" class="seccion-admin" style="display: none;">
+                    <h2>Gestión de Usuarios</h2>
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="searchUsuario" placeholder="Buscar usuario..." 
+                               style="padding: 10px; background: #1a1a1a; border: 1px solid #DAA520; color: #fff; border-radius: 5px; width: 300px;"
+                               onkeyup="filtrarTablaUsuarios()">
+                    </div>
+                    <table class="tabla-admin">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Total de Reservas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyUsuarios">
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección: Canchas -->
+                <section id="seccion-canchas" class="seccion-admin" style="display: none;">
+                    <h2>Gestión de Canchas</h2>
+                    <table class="tabla-admin">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Número</th>
+                                <th>Tipo</th>
+                                <th>Tamaño</th>
+                                <th>Precio/Hora</th>
+                                <th>Estado</th>
+                                <th>Reservas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyCanchas">
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PRE-CANCHA. Todos los derechos reservados. | Sistema de Reservas de Canchas - PANEL ADMINISTRADOR</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        let tablaReservasCompleta = [];
+        let tablaUsuariosCompleta = [];
+
+        function cargarPanel() {
+            if (!session.isLogged()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const sesion = session.getSession();
+            document.getElementById('userName').textContent = sesion.nombre;
+
+            if (sesion.rol !== 'admin') {
+                document.getElementById('accesoNegado').style.display = 'block';
+                document.getElementById('contenidoAdmin').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('accesoNegado').style.display = 'none';
+            document.getElementById('contenidoAdmin').style.display = 'block';
+
+            cargarEstadisticas();
+            cargarReservasAdmin();
+            cargarUsuarios();
+            cargarCanchas();
+        }
+
+        function cargarEstadisticas() {
+            const stats = session.obtenerEstadisticas();
+            document.getElementById('totalReservas').textContent = stats.totalReservas;
+            document.getElementById('reservasConfirmadas').textContent = stats.reservasConfirmadas;
+            document.getElementById('reservasCanceladas').textContent = stats.reservasCanceladas;
+            document.getElementById('totalUsuarios').textContent = stats.totalUsuarios;
+            document.getElementById('totalCanchas').textContent = stats.totalCanchas;
+            document.getElementById('ingresoTotal').textContent = '$' + stats.ingresoTotal;
+        }
+
+        function cargarReservasAdmin() {
+            const reservas = session.obtenerTodasLasReservas();
+            const canchas = session.getCanchas();
+            tablaReservasCompleta = reservas;
+
+            const tbody = document.getElementById('bodyReservas');
+            tbody.innerHTML = '';
+
+            reservas.forEach(reserva => {
+                const cancha = canchas.find(c => c.id === reserva.cancha_id);
+                const estadoColor = {
+                    'confirmada': '#0f0',
+                    'pendiente': '#FFD700',
+                    'cancelada': '#f44'
+                };
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${reserva.id}</td>
+                    <td>${reserva.usuario_nombre}</td>
+                    <td>Cancha ${reserva.cancha_numero}</td>
+                    <td>${new Date(reserva.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${reserva.hora_inicio} - ${reserva.hora_fin}</td>
+                    <td style="color: ${estadoColor[reserva.estado]}; font-weight: bold;">${reserva.estado.toUpperCase()}</td>
+                    <td>$${cancha ? cancha.precio : 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function cargarUsuarios() {
+            const usuarios = session.obtenerTodosLosUsuarios();
+            const reservas = session.getReservas();
+            tablaUsuariosCompleta = usuarios;
+
+            const tbody = document.getElementById('bodyUsuarios');
+            tbody.innerHTML = '';
+
+            usuarios.forEach(usuario => {
+                const cantidadReservas = reservas.filter(r => r.usuario_id === usuario.id).length;
+                const rolColor = usuario.rol === 'admin' ? '#ff4444' : '#DAA520';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${usuario.id}</td>
+                    <td>${usuario.nombre}</td>
+                    <td>${usuario.email}</td>
+                    <td style="color: ${rolColor}; font-weight: bold;">${usuario.rol.toUpperCase()}</td>
+                    <td>${cantidadReservas}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function cargarCanchas() {
+            const canchas = session.getCanchas();
+            const reservas = session.getReservas();
+
+            const tbody = document.getElementById('bodyCanchas');
+            tbody.innerHTML = '';
+
+            canchas.forEach(cancha => {
+                const cantidadReservas = reservas.filter(r => r.cancha_id === cancha.id && (r.estado === 'confirmada' || r.estado === 'pendiente')).length;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cancha.id}</td>
+                    <td>${cancha.numero}</td>
+                    <td>${cancha.tipo}</td>
+                    <td>${cancha.tamaño}</td>
+                    <td>$${cancha.precio}</td>
+                    <td style="color: #0f0; font-weight: bold;">${cancha.estado.toUpperCase()}</td>
+                    <td>${cantidadReservas}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function cambiarSeccion(seccion) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.seccion-admin').forEach(s => s.style.display = 'none');
+            
+            // Mostrar la sección seleccionada
+            document.getElementById('seccion-' + seccion).style.display = 'block';
+
+            // Actualizar botones activos
+            document.querySelectorAll('.tab-admin').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filtrarTablaReservas() {
+            const searchTerm = document.getElementById('searchReserva').value.toLowerCase();
+            const tbody = document.getElementById('bodyReservas');
+            tbody.innerHTML = '';
+
+            const filtradas = tablaReservasCompleta.filter(r => 
+                r.usuario_nombre.toLowerCase().includes(searchTerm) ||
+                r.cancha_numero.toLowerCase().includes(searchTerm)
+            );
+
+            const canchas = session.getCanchas();
+            filtradas.forEach(reserva => {
+                const cancha = canchas.find(c => c.id === reserva.cancha_id);
+                const estadoColor = {
+                    'confirmada': '#0f0',
+                    'pendiente': '#FFD700',
+                    'cancelada': '#f44'
+                };
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${reserva.id}</td>
+                    <td>${reserva.usuario_nombre}</td>
+                    <td>Cancha ${reserva.cancha_numero}</td>
+                    <td>${new Date(reserva.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${reserva.hora_inicio} - ${reserva.hora_fin}</td>
+                    <td style="color: ${estadoColor[reserva.estado]}; font-weight: bold;">${reserva.estado.toUpperCase()}</td>
+                    <td>$${cancha ? cancha.precio : 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarTablaUsuarios() {
+            const searchTerm = document.getElementById('searchUsuario').value.toLowerCase();
+            const tbody = document.getElementById('bodyUsuarios');
+            tbody.innerHTML = '';
+
+            const reservas = session.getReservas();
+            const filtrados = tablaUsuariosCompleta.filter(u =>
+                u.nombre.toLowerCase().includes(searchTerm) ||
+                u.email.toLowerCase().includes(searchTerm)
+            );
+
+            filtrados.forEach(usuario => {
+                const cantidadReservas = reservas.filter(r => r.usuario_id === usuario.id).length;
+                const rolColor = usuario.rol === 'admin' ? '#ff4444' : '#DAA520';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${usuario.id}</td>
+                    <td>${usuario.nombre}</td>
+                    <td>${usuario.email}</td>
+                    <td style="color: ${rolColor}; font-weight: bold;">${usuario.rol.toUpperCase()}</td>
+                    <td>${cantidadReservas}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Cargar panel al iniciar
+        cargarPanel();
+    </script>
+</body>
+</html>

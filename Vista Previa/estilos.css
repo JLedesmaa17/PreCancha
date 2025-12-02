@@ -1,0 +1,1453 @@
+/* ============================================
+   PRE-CANCHA - Sistema de Gestión de Reservas
+   Estilos Globales
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #DAA520;
+    --color-secondary: #FFD700;
+    --color-bg-dark: #000000;
+    --color-bg-light: #1a1a1a;
+    --color-text: #ffffff;
+    --color-text-muted: #cccccc;
+    --color-success: #00ff00;
+    --color-danger: #ff4444;
+    --color-warning: #ffaa00;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+    color: var(--color-text);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ============================================
+   HEADER Y NAVEGACIÓN
+   ============================================ */
+
+header {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(218, 165, 32, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(218, 165, 32, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+nav a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    position: relative;
+}
+
+nav a:hover {
+    color: var(--color-secondary);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-secondary);
+    transition: width 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero {
+    margin-top: 80px;
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 64px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-primary));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero p {
+    font-size: 24px;
+    color: var(--color-text-muted);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-bg-dark);
+    padding: 18px 50px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
+}
+
+.cta-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+}
+
+.cta-button:active {
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   SECCIONES GENERALES
+   ============================================ */
+
+.section-title {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 60px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: var(--color-text-muted);
+    margin-top: -40px;
+    margin-bottom: 40px;
+}
+
+/* ============================================
+   CANCHAS SECTION
+   ============================================ */
+
+.canchas-section {
+    padding: 80px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.canchas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+.cancha-card {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    cursor: pointer;
+}
+
+.cancha-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(218, 165, 32, 0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.6s;
+}
+
+.cancha-card:hover::before {
+    transform: scale(1);
+}
+
+.cancha-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(218, 165, 32, 0.5);
+    border-color: var(--color-secondary);
+}
+
+.cancha-number {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-bg-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(218, 165, 32, 0.4);
+}
+
+.cancha-type {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.cancha-info {
+    color: var(--color-text-muted);
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.cancha-icon {
+    font-size: 80px;
+    margin: 20px 0;
+    display: block;
+    text-align: center;
+}
+
+.estado {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.disponible {
+    background: rgba(0, 255, 0, 0.2);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.ocupado {
+    background: rgba(255, 68, 68, 0.2);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+/* ============================================
+   FEATURES SECTION
+   ============================================ */
+
+.features {
+    padding: 80px 20px;
+    background: rgba(218, 165, 32, 0.05);
+}
+
+.features-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    padding: 20px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    border: 1px solid var(--color-primary);
+    transition: all 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(218, 165, 32, 0.3);
+}
+
+.feature-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.feature-item h3 {
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* ============================================
+   SISTEMA DE RESERVAS
+   ============================================ */
+
+.reservas-container {
+    max-width: 1400px;
+    margin: 100px auto 50px;
+    padding: 20px;
+}
+
+.cancha-seleccionada {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.cancha-seleccionada h2 {
+    color: var(--color-secondary);
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.cancha-detalle {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.detalle-item {
+    background: rgba(218, 165, 32, 0.1);
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid var(--color-primary);
+}
+
+.calendario-section {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.calendario-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-nav {
+    background: var(--color-primary);
+    color: var(--color-bg-dark);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-nav:hover {
+    background: var(--color-secondary);
+    transform: scale(1.05);
+}
+
+.btn-nav:disabled {
+    background: #555;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.mes-actual {
+    font-size: 28px;
+    color: var(--color-secondary);
+    font-weight: bold;
+    min-width: 200px;
+    text-align: center;
+}
+
+.calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.dia-header {
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-primary);
+    padding: 15px;
+    background: rgba(218, 165, 32, 0.1);
+    border-radius: 10px;
+}
+
+.dia-celda {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 10px;
+}
+
+.dia-celda:hover:not(.disabled):not(.otro-mes) {
+    background: rgba(218, 165, 32, 0.2);
+    border-color: var(--color-secondary);
+    transform: scale(1.05);
+}
+
+.dia-celda.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.dia-celda.otro-mes {
+    opacity: 0.2;
+}
+
+.dia-celda.selected {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-bg-dark);
+    border-color: var(--color-secondary);
+    font-weight: bold;
+    transform: scale(1.1);
+}
+
+.dia-celda.hoy {
+    border: 2px solid var(--color-secondary);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.numero-dia {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dia-nombre {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 2px;
+}
+
+.horarios-section {
+    margin-top: 30px;
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.horario-slot {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--color-primary);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.horario-slot:hover:not(.ocupado) {
+    background: rgba(218, 165, 32, 0.2);
+    border-color: var(--color-secondary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(218, 165, 32, 0.3);
+}
+
+.horario-slot.ocupado {
+    background: rgba(255, 68, 68, 0.1);
+    border-color: var(--color-danger);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.horario-slot.selected {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border-color: var(--color-secondary);
+    color: var(--color-bg-dark);
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+.horario-time {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.horario-estado {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   FORMULARIO DE RESERVA
+   ============================================ */
+
+.form-reserva {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--color-secondary);
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    border-radius: 10px;
+    color: var(--color-text);
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: rgba(218, 165, 32, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.resumen-reserva {
+    background: rgba(218, 165, 32, 0.1);
+    border: 2px solid var(--color-primary);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px 0;
+}
+
+.resumen-reserva h3 {
+    color: var(--color-secondary);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+}
+
+.resumen-item:last-child {
+    border-bottom: none;
+}
+
+.resumen-label {
+    color: var(--color-text-muted);
+}
+
+.resumen-value {
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+
+.form-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-submit,
+.btn-cancel {
+    flex: 1;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-bg-dark);
+}
+
+.btn-submit:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(218, 165, 32, 0.5);
+}
+
+.btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text);
+    border: 2px solid rgba(218, 165, 32, 0.3);
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 68, 68, 0.2);
+    border-color: var(--color-danger);
+}
+
+/* ============================================
+   MODAL / ALERTAS
+   ============================================ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    animation: fadeIn 0.3s;
+}
+
+.modal-overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    animation: slideUp 0.3s;
+}
+
+.modal-content h2 {
+    color: var(--color-secondary);
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.modal-content p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-modal {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-modal.primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-bg-dark);
+}
+
+.btn-modal.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text);
+    border: 2px solid rgba(218, 165, 32, 0.3);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+footer {
+    background: var(--color-bg-dark);
+    padding: 40px 20px;
+    text-align: center;
+    border-top: 2px solid var(--color-primary);
+    margin-top: 80px;
+}
+
+footer p {
+    color: var(--color-primary);
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cancha-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.cancha-card:nth-child(1) { animation-delay: 0.1s; }
+.cancha-card:nth-child(2) { animation-delay: 0.2s; }
+.cancha-card:nth-child(3) { animation-delay: 0.3s; }
+.cancha-card:nth-child(4) { animation-delay: 0.4s; }
+.cancha-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .canchas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendario-grid {
+        gap: 5px;
+    }
+
+    .dia-celda {
+        padding: 5px;
+    }
+
+    .numero-dia {
+        font-size: 16px;
+    }
+
+    .dia-nombre {
+        font-size: 8px;
+    }
+
+    .horarios-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .mes-actual {
+        font-size: 20px;
+        min-width: auto;
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+
+    .calendario-header {
+        flex-direction: column;
+    }
+
+    .cancha-detalle {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendario-section,
+    .form-reserva,
+    .cancha-seleccionada {
+        padding: 20px;
+    }
+
+    .horario-time {
+        font-size: 18px;
+    }
+
+    .modal-content {
+        padding: 25px;
+    }
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-muted);
+    font-size: 18px;
+}
+
+.error-message {
+    background: rgba(255, 68, 68, 0.2);
+    border: 2px solid var(--color-danger);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    color: var(--color-danger);
+    text-align: center;
+}
+
+.success-message {
+    background: rgba(0, 255, 0, 0.2);
+    border: 2px solid var(--color-success);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    color: var(--color-success);
+    text-align: center;
+}
+
+/* ============================================
+   LOGIN Y REGISTRO
+   ============================================ */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+    margin-top: 80px;
+}
+
+.login-box {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    padding: 50px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(218, 165, 32, 0.3);
+}
+
+.login-box h1 {
+    font-size: 36px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.subtitulo {
+    text-align: center;
+    color: var(--color-secondary);
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.login-box .form-group input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    border-radius: 8px;
+    color: var(--color-text);
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: all 0.3s;
+}
+
+.login-box .form-group input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: rgba(218, 165, 32, 0.1);
+}
+
+.usuarios-prueba {
+    background: rgba(218, 165, 32, 0.1);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.usuarios-prueba h3 {
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.cuenta-prueba {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 3px solid var(--color-secondary);
+    font-size: 13px;
+}
+
+.cuenta-prueba p {
+    margin: 3px 0;
+    color: var(--color-text-muted);
+}
+
+.cuenta-prueba strong {
+    color: var(--color-secondary);
+}
+
+/* ============================================
+   ALERTAS
+   ============================================ */
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid transparent;
+}
+
+.alert-error {
+    background: rgba(255, 68, 68, 0.2);
+    border-left-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.alert-success {
+    background: rgba(0, 255, 0, 0.2);
+    border-left-color: var(--color-success);
+    color: var(--color-success);
+}
+
+/* ============================================
+   BIENVENIDA Y GRID DE CANCHAS
+   ============================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+main {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    padding-bottom: 40px;
+}
+
+.bienvenida {
+    background: rgba(218, 165, 32, 0.15);
+    border: 2px solid #DAA520;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.bienvenida h2 {
+    color: #DAA520;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.bienvenida p {
+    font-size: 16px;
+    color: var(--color-text-muted);
+}
+
+.usuario-info {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.grid-canchas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.cancha-card {
+    background: #1a1a1a;
+    border: 2px solid #DAA520;
+    border-radius: 12px;
+    padding: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.cancha-card:hover {
+    border-color: #FFD700;
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.4);
+    transform: translateY(-5px);
+}
+
+.cancha-numero {
+    font-size: 32px;
+    font-weight: bold;
+    color: #DAA520;
+    margin-bottom: 10px;
+}
+
+.cancha-tipo {
+    color: #FFD700;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.cancha-detalle {
+    font-size: 14px;
+    color: #bbb;
+    margin: 8px 0;
+}
+
+.cancha-precio {
+    font-size: 20px;
+    color: #0f0;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.btn-reservar,
+.btn-primario {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #DAA520, #FFD700);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn-reservar:hover,
+.btn-primario:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(218, 165, 32, 0.5);
+}
+
+/* ============================================
+   MODAL DE RESERVA
+   ============================================ */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    margin: 5% auto;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    animation: slideUp 0.3s;
+}
+
+.modal-content h2 {
+    color: var(--color-secondary);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+}
+
+/* ============================================
+   TABLA DE RESERVAS Y ADMIN
+   ============================================ */
+
+.tabla-reservas,
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.tabla-reservas thead,
+.tabla-admin thead {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    color: #000;
+    font-weight: bold;
+}
+
+.tabla-reservas th,
+.tabla-admin th {
+    padding: 15px;
+    text-align: left;
+}
+
+.tabla-reservas td,
+.tabla-admin td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+}
+
+.tabla-reservas tr:last-child td,
+.tabla-admin tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-reservas tr:hover,
+.tabla-admin tr:hover {
+    background: rgba(218, 165, 32, 0.1);
+}
+
+.btn-accion {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cancelar {
+    background: rgba(255, 68, 68, 0.8);
+    color: #fff;
+}
+
+.btn-cancelar:hover {
+    background: #f44;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.tabs-filtro {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn,
+.tab-admin {
+    padding: 10px 20px;
+    background: rgba(218, 165, 32, 0.2);
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.tab-btn.active,
+.tab-admin.active,
+.tab-btn:hover,
+.tab-admin:hover {
+    background: var(--color-primary);
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   PANEL ADMIN
+   ============================================ */
+
+.tabs-admin {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.seccion-admin {
+    animation: fadeInUp 0.3s;
+}
+
+.grid-estadisticas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card-estadistica {
+    background: linear-gradient(145deg, var(--color-bg-light), #0d0d0d);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card-estadistica:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(218, 165, 32, 0.3);
+    border-color: var(--color-secondary);
+}
+
+.card-estadistica h3 {
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.card-estadistica .numero {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 0;
+    }
+
+    nav ul {
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .grid-canchas {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .tabs-filtro,
+    .tabs-admin {
+        flex-direction: column;
+    }
+
+    .tab-btn,
+    .tab-admin {
+        width: 100%;
+    }
+
+    .login-box {
+        padding: 30px;
+    }
+
+    .tabla-reservas,
+    .tabla-admin {
+        font-size: 12px;
+    }
+
+    .tabla-reservas th,
+    .tabla-admin th,
+    .tabla-reservas td,
+    .tabla-admin td {
+        padding: 8px;
+    }
+
+    .grid-estadisticas {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .modal-content {
+        margin: 20% auto;
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        margin-top: 60px;
+    }
+
+    header {
+        padding: 10px 0;
+    }
+
+    nav {
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    nav ul {
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .grid-canchas {
+        grid-template-columns: 1fr;
+    }
+
+    .login-box {
+        padding: 20px;
+    }
+
+    .bienvenida {
+        padding: 15px;
+    }
+
+    .bienvenida h2 {
+        font-size: 18px;
+    }
+}

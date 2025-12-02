@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Turno - PRE-CANCHA</title>
+    <meta name="description" content="Reserva tu turno en nuestra cancha de forma rápida y sencilla">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <div class="logo" onclick="window.location.href='landing.html'">⚽ PRE-CANCHA</div>
+            <ul>
+                <li><a href="landing.html">Inicio</a></li>
+                <li><a href="landing.html#canchas">Canchas</a></li>
+                <li><a href="landing.html#features">Características</a></li>
+                <li><a href="landing.html#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="reservas-container">
+        <!-- INFORMACIÓN DE LA CANCHA SELECCIONADA -->
+        <div class="cancha-seleccionada" id="canchaInfo">
+            <h2>🏟️ Reserva tu Turno</h2>
+            <p style="color: #cccccc; margin-bottom: 20px;">
+                Selecciona la fecha y horario de tu preferencia
+            </p>
+            <div class="cancha-detalle" id="canchaDetalle">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="calendario-section">
+            <h3 class="section-title" style="font-size: 32px; margin-bottom: 30px;">
+                📅 Selecciona una Fecha
+            </h3>
+            
+            <div class="calendario-header">
+                <div class="calendario-nav">
+                    <button class="btn-nav" onclick="cambiarMes(-1)" id="btnMesAnterior">
+                        ◀ Anterior
+                    </button>
+                    <div class="mes-actual" id="mesActual">
+                        <!-- Se actualiza dinámicamente -->
+                    </div>
+                    <button class="btn-nav" onclick="cambiarMes(1)">
+                        Siguiente ▶
+                    </button>
+                </div>
+            </div>
+
+            <div class="calendario-grid" id="calendarioGrid">
+                <!-- Se genera dinámicamente -->
+            </div>
+
+            <!-- SECCIÓN DE HORARIOS -->
+            <div class="horarios-section" id="horariosSection" style="display: none;">
+                <h3 style="color: #FFD700; font-size: 24px; margin-bottom: 20px;">
+                    ⏰ Horarios Disponibles
+                </h3>
+                <p style="color: #cccccc; margin-bottom: 20px;">
+                    Selecciona el horario que prefieras para tu reserva
+                </p>
+                <div class="horarios-grid" id="horariosGrid">
+                    <!-- Se genera dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE RESERVA -->
+        <div class="form-reserva" id="formReserva" style="display: none;">
+            <h3 class="section-title" style="font-size: 32px; margin-bottom: 30px;">
+                📝 Completa tu Reserva
+            </h3>
+
+            <!-- RESUMEN DE LA RESERVA -->
+            <div class="resumen-reserva">
+                <h3>📋 Resumen de tu Reserva</h3>
+                <div class="resumen-item">
+                    <span class="resumen-label">Cancha:</span>
+                    <span class="resumen-value" id="resumenCancha">-</span>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-label">Fecha:</span>
+                    <span class="resumen-value" id="resumenFecha">-</span>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-label">Horario:</span>
+                    <span class="resumen-value" id="resumenHorario">-</span>
+                </div>
+                <div class="resumen-item">
+                    <span class="resumen-label">Duración:</span>
+                    <span class="resumen-value">1 hora</span>
+                </div>
+            </div>
+
+            <!-- FORMULARIO -->
+            <form id="formularioReserva" onsubmit="enviarReserva(event)">
+                <div class="form-group">
+                    <label for="nombre">👤 Nombre Completo *</label>
+                    <input 
+                        type="text" 
+                        id="nombre" 
+                        name="nombre" 
+                        required 
+                        placeholder="Ej: Juan Pérez"
+                        minlength="3"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">📱 Teléfono de Contacto *</label>
+                    <input 
+                        type="tel" 
+                        id="telefono" 
+                        name="telefono" 
+                        required 
+                        placeholder="Ej: +54 11 1234-5678"
+                        pattern="[0-9+\s-]+"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="tu@email.com"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="observaciones">💬 Observaciones (opcional)</label>
+                    <textarea 
+                        id="observaciones" 
+                        name="observaciones" 
+                        placeholder="Comentarios adicionales sobre tu reserva..."
+                    ></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="cancelarReserva()">
+                        ❌ Cancelar
+                    </button>
+                    <button type="submit" class="btn-submit" id="btnEnviar">
+                        ✅ Confirmar Reserva
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN -->
+    <div class="modal-overlay" id="modalConfirmacion">
+        <div class="modal-content">
+            <h2>🎉 ¡Reserva Confirmada!</h2>
+            <p id="mensajeConfirmacion">
+                Tu reserva ha sido registrada exitosamente. 
+                Recibirás un mensaje de confirmación en breve.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-modal primary" onclick="cerrarModalYVolver()">
+                    🏠 Volver al Inicio
+                </button>
+                <button class="btn-modal secondary" onclick="nuevaReserva()">
+                    ➕ Nueva Reserva
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ERROR -->
+    <div class="modal-overlay" id="modalError">
+        <div class="modal-content">
+            <h2>⚠️ Atención</h2>
+            <p id="mensajeError"></p>
+            <div class="modal-actions">
+                <button class="btn-modal primary" onclick="cerrarModal('modalError')">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2024 PRE-CANCHA - Sistema de Gestión de Reservas</p>
+        <p style="margin-top: 10px;">📧 info@precancha.com | 📞 +54 11 1234-5678</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let canchaSeleccionada = null;
+        let mesActual = new Date().getMonth();
+        let anioActual = new Date().getFullYear();
+        let fechaSeleccionada = null;
+        let horarioSeleccionado = null;
+        
+        const meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        
+        const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        
+        // Horarios disponibles (de 9:00 a 23:00)
+        const horariosDisponibles = [
+            '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
+            '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
+        ];
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        window.onload = function() {
+            cargarCanchaSeleccionada();
+            generarCalendario();
+            verificarReservasExistentes();
+        };
+
+        // ============================================
+        // CARGAR CANCHA DESDE SESSIONSTORAGE
+        // ============================================
+        function cargarCanchaSeleccionada() {
+            const canchaGuardada = sessionStorage.getItem('canchaSeleccionada');
+            
+            if (!canchaGuardada) {
+                mostrarError('No se ha seleccionado ninguna cancha. Redirigiendo...');
+                setTimeout(() => {
+                    window.location.href = 'landing.html';
+                }, 2000);
+                return;
+            }
+            
+            canchaSeleccionada = JSON.parse(canchaGuardada);
+            mostrarInfoCancha();
+        }
+
+        // ============================================
+        // MOSTRAR INFORMACIÓN DE LA CANCHA
+        // ============================================
+        function mostrarInfoCancha() {
+            const detalle = document.getElementById('canchaDetalle');
+            detalle.innerHTML = `
+                <div class="detalle-item">
+                    <div style="font-size: 48px; margin-bottom: 10px;">${canchaSeleccionada.icon}</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #FFD700;">
+                        Cancha ${canchaSeleccionada.numero}
+                    </div>
+                </div>
+                <div class="detalle-item">
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;">
+                        ${canchaSeleccionada.tipo}
+                    </div>
+                    <div style="font-size: 14px; color: #cccccc;">
+                        ${canchaSeleccionada.jugadores} jugadores
+                    </div>
+                </div>
+                <div class="detalle-item">
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;">
+                        ${canchaSeleccionada.superficie}
+                    </div>
+                    <div style="font-size: 14px; color: #cccccc;">
+                        ${canchaSeleccionada.descripcion}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // GENERAR CALENDARIO
+        // ============================================
+        function generarCalendario() {
+            const grid = document.getElementById('calendarioGrid');
+            const mesLabel = document.getElementById('mesActual');
+            
+            // Actualizar título del mes
+            mesLabel.textContent = `${meses[mesActual]} ${anioActual}`;
+            
+            // Limpiar calendario
+            grid.innerHTML = '';
+            
+            // Headers de días de la semana
+            diasSemana.forEach(dia => {
+                const header = document.createElement('div');
+                header.className = 'dia-header';
+                header.textContent = dia;
+                grid.appendChild(header);
+            });
+            
+            // Primer día del mes
+            const primerDia = new Date(anioActual, mesActual, 1).getDay();
+            const diasEnMes = new Date(anioActual, mesActual + 1, 0).getDate();
+            const hoy = new Date();
+            
+            // Días del mes anterior (para completar la semana)
+            const diasMesAnterior = new Date(anioActual, mesActual, 0).getDate();
+            for (let i = primerDia - 1; i >= 0; i--) {
+                const celda = crearCeldaDia(
+                    diasMesAnterior - i,
+                    true,
+                    false,
+                    null
+                );
+                celda.classList.add('otro-mes');
+                grid.appendChild(celda);
+            }
+            
+            // Días del mes actual
+            for (let dia = 1; dia <= diasEnMes; dia++) {
+                const fecha = new Date(anioActual, mesActual, dia);
+                const esPasado = fecha < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+                const esHoy = fecha.toDateString() === hoy.toDateString();
+                
+                const celda = crearCeldaDia(dia, false, esPasado, fecha);
+                
+                if (esHoy) {
+                    celda.classList.add('hoy');
+                }
+                
+                if (fechaSeleccionada && 
+                    fecha.toDateString() === fechaSeleccionada.toDateString()) {
+                    celda.classList.add('selected');
+                }
+                
+                grid.appendChild(celda);
+            }
+            
+            // Completar con días del mes siguiente
+            const celdasRestantes = 42 - grid.children.length + 7; // 42 celdas total (6 semanas)
+            for (let dia = 1; dia <= celdasRestantes; dia++) {
+                const celda = crearCeldaDia(dia, true, false, null);
+                celda.classList.add('otro-mes');
+                grid.appendChild(celda);
+            }
+            
+            // Deshabilitar botón de mes anterior si es el mes actual
+            const btnMesAnterior = document.getElementById('btnMesAnterior');
+            const fechaActual = new Date();
+            if (mesActual === fechaActual.getMonth() && anioActual === fechaActual.getFullYear()) {
+                btnMesAnterior.disabled = true;
+            } else {
+                btnMesAnterior.disabled = false;
+            }
+        }
+
+        // ============================================
+        // CREAR CELDA DE DÍA
+        // ============================================
+        function crearCeldaDia(numero, otroMes, esPasado, fecha) {
+            const celda = document.createElement('div');
+            celda.className = 'dia-celda';
+            
+            if (esPasado && !otroMes) {
+                celda.classList.add('disabled');
+            }
+            
+            celda.innerHTML = `
+                <div class="numero-dia">${numero}</div>
+            `;
+            
+            if (!otroMes && !esPasado && fecha) {
+                celda.onclick = () => seleccionarFecha(fecha, celda);
+            }
+            
+            return celda;
+        }
+
+        // ============================================
+        // SELECCIONAR FECHA
+        // ============================================
+        function seleccionarFecha(fecha, elemento) {
+            fechaSeleccionada = fecha;
+            horarioSeleccionado = null;
+            
+            // Remover selección anterior
+            document.querySelectorAll('.dia-celda').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Marcar nueva selección
+            elemento.classList.add('selected');
+            
+            // Mostrar horarios disponibles
+            mostrarHorarios();
+            
+            // Ocultar formulario
+            document.getElementById('formReserva').style.display = 'none';
+        }
+
+        // ============================================
+        // MOSTRAR HORARIOS DISPONIBLES
+        // ============================================
+        function mostrarHorarios() {
+            const horariosSection = document.getElementById('horariosSection');
+            const horariosGrid = document.getElementById('horariosGrid');
+            
+            horariosSection.style.display = 'block';
+            horariosGrid.innerHTML = '';
+            
+            // Obtener reservas existentes para esta fecha
+            const reservasExistentes = obtenerReservasPorFecha(fechaSeleccionada);
+            
+            horariosDisponibles.forEach(horario => {
+                const slot = document.createElement('div');
+                slot.className = 'horario-slot';
+                
+                // Verificar si el horario está ocupado
+                const estaOcupado = reservasExistentes.includes(horario);
+                
+                if (estaOcupado) {
+                    slot.classList.add('ocupado');
+                }
+                
+                slot.innerHTML = `
+                    <div class="horario-time">${horario}</div>
+                    <div class="horario-estado">${estaOcupado ? '❌ Ocupado' : '✓ Disponible'}</div>
+                `;
+                
+                if (!estaOcupado) {
+                    slot.onclick = () => seleccionarHorario(horario, slot);
+                }
+                
+                horariosGrid.appendChild(slot);
+            });
+            
+            // Scroll suave a los horarios
+            horariosSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ============================================
+        // SELECCIONAR HORARIO
+        // ============================================
+        function seleccionarHorario(horario, elemento) {
+            horarioSeleccionado = horario;
+            
+            // Remover selección anterior
+            document.querySelectorAll('.horario-slot').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Marcar nueva selección
+            elemento.classList.add('selected');
+            
+            // Mostrar formulario de reserva
+            mostrarFormulario();
+        }
+
+        // ============================================
+        // MOSTRAR FORMULARIO
+        // ============================================
+        function mostrarFormulario() {
+            const formReserva = document.getElementById('formReserva');
+            formReserva.style.display = 'block';
+            
+            // Actualizar resumen
+            document.getElementById('resumenCancha').textContent = 
+                `Cancha ${canchaSeleccionada.numero} - ${canchaSeleccionada.tipo}`;
+            document.getElementById('resumenFecha').textContent = 
+                formatearFecha(fechaSeleccionada);
+            document.getElementById('resumenHorario').textContent = 
+                `${horarioSeleccionado} - ${calcularHoraFin(horarioSeleccionado)}`;
+            
+            // Scroll suave al formulario
+            formReserva.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ============================================
+        // ENVIAR RESERVA
+        // ============================================
+        function enviarReserva(event) {
+            event.preventDefault();
+            
+            const btnEnviar = document.getElementById('btnEnviar');
+            btnEnviar.disabled = true;
+            btnEnviar.textContent = '⏳ Procesando...';
+            
+            // Obtener datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const observaciones = document.getElementById('observaciones').value;
+            
+            // Crear objeto de reserva
+            const reserva = {
+                id: Date.now(),
+                cancha: canchaSeleccionada,
+                fecha: fechaSeleccionada.toISOString(),
+                horario: horarioSeleccionado,
+                cliente: {
+                    nombre: nombre,
+                    telefono: telefono,
+                    email: email,
+                    observaciones: observaciones
+                },
+                fechaCreacion: new Date().toISOString(),
+                estado: 'pendiente'
+            };
+            
+            // Guardar reserva
+            guardarReserva(reserva);
+            
+            // Simular procesamiento
+            setTimeout(() => {
+                btnEnviar.disabled = false;
+                btnEnviar.textContent = '✅ Confirmar Reserva';
+                mostrarConfirmacion(reserva);
+            }, 1500);
+        }
+
+        // ============================================
+        // GUARDAR RESERVA EN SESSIONSTORAGE
+        // ============================================
+        function guardarReserva(reserva) {
+            let reservas = JSON.parse(sessionStorage.getItem('reservas') || '[]');
+            reservas.push(reserva);
+            sessionStorage.setItem('reservas', JSON.stringify(reservas));
+        }
+
+        // ============================================
+        // OBTENER RESERVAS POR FECHA
+        // ============================================
+        function obtenerReservasPorFecha(fecha) {
+            const reservas = JSON.parse(sessionStorage.getItem('reservas') || '[]');
+            const fechaBuscar = fecha.toDateString();
+            
+            return reservas
+                .filter(r => {
+                    const fechaReserva = new Date(r.fecha);
+                    return fechaReserva.toDateString() === fechaBuscar && 
+                           r.cancha.numero === canchaSeleccionada.numero;
+                })
+                .map(r => r.horario);
+        }
+
+        // ============================================
+        // VERIFICAR RESERVAS EXISTENTES
+        // ============================================
+        function verificarReservasExistentes() {
+            const reservas = JSON.parse(sessionStorage.getItem('reservas') || '[]');
+            console.log(`Total de reservas en el sistema: ${reservas.length}`);
+        }
+
+        // ============================================
+        // MOSTRAR CONFIRMACIÓN
+        // ============================================
+        function mostrarConfirmacion(reserva) {
+            const modal = document.getElementById('modalConfirmacion');
+            const mensaje = document.getElementById('mensajeConfirmacion');
+            
+            mensaje.innerHTML = `
+                <strong>¡Tu reserva ha sido confirmada exitosamente!</strong><br><br>
+                📋 <strong>Detalles de tu reserva:</strong><br>
+                🏟️ Cancha ${reserva.cancha.numero} - ${reserva.cancha.tipo}<br>
+                📅 Fecha: ${formatearFecha(new Date(reserva.fecha))}<br>
+                ⏰ Horario: ${reserva.horario} - ${calcularHoraFin(reserva.horario)}<br>
+                👤 A nombre de: ${reserva.cliente.nombre}<br><br>
+                Te enviaremos un mensaje de confirmación al ${reserva.cliente.telefono}
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // ============================================
+        // MOSTRAR ERROR
+        // ============================================
+        function mostrarError(mensaje) {
+            const modal = document.getElementById('modalError');
+            document.getElementById('mensajeError').textContent = mensaje;
+            modal.classList.add('active');
+        }
+
+        // ============================================
+        // CERRAR MODAL
+        // ============================================
+        function cerrarModal(idModal) {
+            document.getElementById(idModal).classList.remove('active');
+        }
+
+        function cerrarModalYVolver() {
+            cerrarModal('modalConfirmacion');
+            window.location.href = 'landing.html';
+        }
+
+        function nuevaReserva() {
+            cerrarModal('modalConfirmacion');
+            location.reload();
+        }
+
+        // ============================================
+        // CANCELAR RESERVA
+        // ============================================
+        function cancelarReserva() {
+            if (confirm('¿Estás seguro de que deseas cancelar la reserva?')) {
+                window.location.href = 'landing.html';
+            }
+        }
+
+        // ============================================
+        // CAMBIAR MES
+        // ============================================
+        function cambiarMes(direccion) {
+            mesActual += direccion;
+            
+            if (mesActual > 11) {
+                mesActual = 0;
+                anioActual++;
+            } else if (mesActual < 0) {
+                mesActual = 11;
+                anioActual--;
+            }
+            
+            // Limpiar selecciones
+            fechaSeleccionada = null;
+            horarioSeleccionado = null;
+            document.getElementById('horariosSection').style.display = 'none';
+            document.getElementById('formReserva').style.display = 'none';
+            
+            generarCalendario();
+        }
+
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+        function formatearFecha(fecha) {
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const dia = fecha.getDate();
+            const mes = meses[fecha.getMonth()];
+            const anio = fecha.getFullYear();
+            const diaSemana = dias[fecha.getDay()];
+            
+            return `${diaSemana}, ${dia} de ${mes} de ${anio}`;
+        }
+
+        function calcularHoraFin(horaInicio) {
+            const [hora, minutos] = horaInicio.split(':');
+            const horaFin = parseInt(hora) + 1;
+            return `${horaFin.toString().padStart(2, '0')}:${minutos}`;
+        }
+
+        // ============================================
+        // PREVENIR DOBLE SUBMIT
+        // ============================================
+        document.getElementById('formularioReserva').addEventListener('submit', function() {
+            const btnEnviar = document.getElementById('btnEnviar');
+            btnEnviar.disabled = true;
+        });
+    </script>
+</body>
+</html>

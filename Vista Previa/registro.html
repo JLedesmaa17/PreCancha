@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - PRE-CANCHA</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header>
+        <nav>
+            <div class="logo">PRE-CANCHA</div>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="login-container">
+                <div class="login-box">
+                    <h1>PRE-CANCHA</h1>
+                    <p class="subtitulo">Crear Cuenta</p>
+
+                    <div id="mensajeError" class="alert alert-error" style="display: none;"></div>
+                    <div id="mensajeExito" class="alert alert-success" style="display: none;"></div>
+
+                    <form id="registroForm" onsubmit="procesarRegistro(event)">
+                        <div class="form-group">
+                            <label for="nombre">Nombre Completo:</label>
+                            <input type="text" id="nombre" required placeholder="Tu nombre completo">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" required placeholder="tu@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" required placeholder="Ingresa una contraseña" minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordConfirm">Confirmar Contraseña:</label>
+                            <input type="password" id="passwordConfirm" required placeholder="Confirma tu contraseña" minlength="6">
+                        </div>
+
+                        <button type="submit" class="btn-primario" style="width: 100%; padding: 12px;">Crear Cuenta</button>
+                    </form>
+
+                    <div style="margin-top: 20px; text-align: center; color: #bbb;">
+                        <p>¿Ya tienes cuenta? <a href="login.html" style="color: #DAA520; text-decoration: none;">Inicia sesión aquí</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PRE-CANCHA. Todos los derechos reservados. | Sistema de Reservas de Canchas</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Si ya está logueado, redirigir a inicio
+        if (session.isLogged()) {
+            window.location.href = 'index.html';
+        }
+
+        function procesarRegistro(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+            const mensajeError = document.getElementById('mensajeError');
+            const mensajeExito = document.getElementById('mensajeExito');
+
+            // Limpiar mensajes
+            mensajeError.style.display = 'none';
+            mensajeExito.style.display = 'none';
+
+            // Validaciones
+            if (nombre.length < 3) {
+                mensajeError.textContent = 'El nombre debe tener al menos 3 caracteres';
+                mensajeError.style.display = 'block';
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                mensajeError.textContent = 'Las contraseñas no coinciden';
+                mensajeError.style.display = 'block';
+                return;
+            }
+
+            // Verificar si el email ya existe
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            if (usuarios.find(u => u.email === email)) {
+                mensajeError.textContent = 'Este email ya está registrado';
+                mensajeError.style.display = 'block';
+                return;
+            }
+
+            // Crear nuevo usuario
+            const nuevoUsuario = {
+                id: Math.max(...usuarios.map(u => u.id), 0) + 1,
+                nombre: nombre,
+                email: email,
+                password: password, // En producción, esto debería estar encriptado
+                rol: 'usuario'
+            };
+
+            usuarios.push(nuevoUsuario);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            mensajeExito.textContent = '¡Cuenta creada exitosamente! Redirigiendo...';
+            mensajeExito.style.display = 'block';
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INICIO - PRE-CANCHA Sistema HTML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000, #1a1a1a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 2px solid #DAA520;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(218, 165, 32, 0.3);
+        }
+        
+        h1 {
+            font-size: 48px;
+            background: linear-gradient(90deg, #DAA520, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .descripcion {
+            background: rgba(218, 165, 32, 0.1);
+            border-left: 4px solid #DAA520;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .botones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .btn-primario {
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            color: #000;
+        }
+        
+        .btn-primario:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.5);
+        }
+        
+        .btn-secundario {
+            background: rgba(218, 165, 32, 0.2);
+            color: #DAA520;
+            border: 2px solid #DAA520;
+        }
+        
+        .btn-secundario:hover {
+            background: rgba(218, 165, 32, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .cuentas {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #DAA520;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .cuentas h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .cuenta {
+            background: rgba(218, 165, 32, 0.1);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #FFD700;
+        }
+        
+        .cuenta p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .cuenta-label {
+            color: #DAA520;
+            font-weight: bold;
+        }
+        
+        .cuenta-valor {
+            color: #0f0;
+            font-family: monospace;
+        }
+        
+        .detalles {
+            background: rgba(218, 165, 32, 0.05);
+            border: 1px solid #DAA520;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.8;
+        }
+        
+        .detalles ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .detalles li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 600px) {
+            .botones {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PRE-CANCHA</h1>
+        <p class="subtitulo">Sistema de Reservas - Versión HTML</p>
+        
+        <div class="descripcion">
+            ✨ Sistema completamente funcional de reservas de canchas de fútbol
+            <br>💾 Datos guardados localmente en tu navegador
+            <br>🔐 Sesiones de usuario incluidas
+            <br>👨‍💼 Panel de administrador integrado
+        </div>
+        
+        <div class="botones">
+            <a href="index.html" class="btn btn-primario">
+                🏃 EMPEZAR AHORA
+            </a>
+            <a href="login.html" class="btn btn-primario">
+                🔑 INICIAR SESIÓN
+            </a>
+        </div>
+        
+        <div class="botones">
+            <a href="registro.html" class="btn btn-secundario">
+                📝 REGISTRARSE
+            </a>
+            <a href="README.md" class="btn btn-secundario">
+                📖 LEER GUÍA
+            </a>
+        </div>
+        
+        <div class="cuentas">
+            <h3>👤 Cuentas de Prueba</h3>
+            
+            <div class="cuenta">
+                <p><span class="cuenta-label">Usuario Regular:</span></p>
+                <p>Email: <span class="cuenta-valor">juan@example.com</span></p>
+                <p>Contraseña: <span class="cuenta-valor">123456</span></p>
+            </div>
+            
+            <div class="cuenta">
+                <p><span class="cuenta-label">Administrador:</span></p>
+                <p>Email: <span class="cuenta-valor">admin@example.com</span></p>
+                <p>Contraseña: <span class="cuenta-valor">admin123</span></p>
+            </div>
+        </div>
+        
+        <div class="detalles">
+            <strong>📋 Funcionalidades Incluidas:</strong>
+            <ul>
+                <li>✅ Autenticación de usuarios con sesiones</li>
+                <li>✅ Sistema de registro de nuevos usuarios</li>
+                <li>✅ Reserva de canchas con fechas y horarios</li>
+                <li>✅ Gestión de mis reservas (crear, ver, cancelar)</li>
+                <li>✅ Panel de administrador con estadísticas</li>
+                <li>✅ Listado de todas las reservas (admin)</li>
+                <li>✅ Gestión de usuarios (admin)</li>
+                <li>✅ Gestión de canchas (admin)</li>
+                <li>✅ Interfaz completamente responsiva</li>
+                <li>✅ Todo sin necesidad de servidor</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

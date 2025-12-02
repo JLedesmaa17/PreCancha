@@ -1,0 +1,289 @@
+✅ PÁGINA DE SOLICITUDES - NUEVA FUNCIONALIDAD
+═══════════════════════════════════════════════════════════════════════════
+
+Se ha agregado una nueva página "solicitudes.html" que permite a los 
+administradores ver, gestionar y aprobar/rechazar solicitudes de reservas.
+
+
+📄 NUEVO ARCHIVO: solicitudes.html
+═══════════════════════════════════════════════════════════════════════════
+
+Ubicación: Vista Previa/solicitudes.html
+
+Funcionalidades:
+  ✅ Ver todas las solicitudes pendientes
+  ✅ Filtrar por estado (Pendientes, Todas, Aprobadas, Rechazadas)
+  ✅ Aprobar solicitudes de reservas
+  ✅ Rechazar solicitudes de reservas
+  ✅ Ver estadísticas en tiempo real
+  ✅ Información detallada de cada solicitud
+  ✅ Solo accesible para administradores
+
+
+🎯 CÓMO ACCEDER A LAS SOLICITUDES
+═══════════════════════════════════════════════════════════════════════════
+
+1. COMO ADMINISTRADOR:
+   a) Inicia sesión con: admin@example.com / admin123
+   b) En la navegación verás "Solicitudes"
+   c) Haz clic para ver todas las solicitudes pendientes
+
+2. DESDE EL PANEL ADMIN:
+   a) Haz clic en "Panel Admin"
+   b) Luego haz clic en "Solicitudes" en el menú
+
+
+📊 VISTA DE SOLICITUDES
+═══════════════════════════════════════════════════════════════════════════
+
+La página muestra:
+
+ESTADÍSTICAS:
+  - Total de solicitudes
+  - Solicitudes pendientes
+  - Solicitudes aprobadas
+  - Solicitudes rechazadas
+
+LISTADO DE SOLICITUDES:
+  Para cada solicitud se muestra:
+  - ID único
+  - Estado actual (Pendiente, Aprobada, Rechazada)
+  - Nombre del usuario que solicitó
+  - Email del usuario
+  - Número y tipo de cancha
+  - Fecha y hora de la reserva
+  - Monto a pagar
+  - Observaciones (si las hay)
+
+ACCIONES:
+  - Aprobar: Cambia estado a "confirmada"
+  - Rechazar: Cambia estado a "rechazada"
+
+
+🔄 FLUJO DE SOLICITUDES
+═══════════════════════════════════════════════════════════════════════════
+
+USUARIO:
+  1. Crea una reserva → Estado: "pendiente"
+  2. Ve su reserva en "Mis Reservas"
+  3. La reserva está en estado "pendiente" hasta que admin la apruebe
+
+ADMINISTRADOR:
+  1. Ve "Solicitudes" en el menú
+  2. Lee las solicitudes pendientes
+  3. Puede aprobar → Estado: "confirmada"
+  4. Puede rechazar → Estado: "rechazada"
+  5. Las solicitudes aprobadas aparecen en las estadísticas
+
+
+✨ FILTROS DISPONIBLES
+═══════════════════════════════════════════════════════════════════════════
+
+- PENDIENTES: Solo muestra solicitudes que necesitan aprobación
+- TODAS: Muestra todas las solicitudes del sistema
+- APROBADAS: Muestra solicitudes ya confirmadas
+- RECHAZADAS: Muestra solicitudes que fueron rechazadas
+
+
+💾 CAMBIOS EN EL CÓDIGO
+═══════════════════════════════════════════════════════════════════════════
+
+app.js:
+  - Nuevo método: obtenerSolicitudesPendientes()
+  - Nuevo método: aprobarSolicitud(reserva_id)
+  - Nuevo método: rechazarSolicitud(reserva_id)
+  - Las nuevas reservas se crean con estado "pendiente"
+
+index.html:
+  - Se agregó enlace a solicitudes (solo para admins)
+
+admin.html:
+  - Se agregó enlace a solicitudes en la navegación
+
+
+📋 DATOS DE PRUEBA
+═══════════════════════════════════════════════════════════════════════════
+
+Se incluyen 3 reservas de ejemplo:
+
+1. Reserva 1 (Confirmada):
+   Usuario: Juan Pérez
+   Cancha: 1 (5 vs 5)
+   Fecha: 10 de Diciembre 2025
+   Hora: 10:00 - 11:00
+   Estado: CONFIRMADA
+
+2. Reserva 2 (Pendiente):
+   Usuario: Juan Pérez
+   Cancha: 2 (7 vs 7)
+   Fecha: 12 de Diciembre 2025
+   Hora: 16:00 - 17:00
+   Estado: PENDIENTE
+
+3. Reserva 3 (Pendiente):
+   Usuario: Carlos López
+   Cancha: 3 (11 vs 11)
+   Fecha: 15 de Diciembre 2025
+   Hora: 14:00 - 15:00
+   Estado: PENDIENTE
+
+
+🧪 CÓMO PROBAR LA FUNCIONALIDAD
+═══════════════════════════════════════════════════════════════════════════
+
+1. COMO USUARIO:
+   a) Login: juan@example.com / 123456
+   b) Crea una nueva reserva
+   c) Verás que está en estado "PENDIENTE"
+
+2. COMO ADMIN:
+   a) Login: admin@example.com / admin123
+   b) Ve a "Solicitudes"
+   c) Verás las reservas pendientes
+   d) Haz clic en "Aprobar" o "Rechazar"
+   e) La reserva cambia de estado
+
+3. VERIFICAR CAMBIOS:
+   a) Como admin, ve a "Solicitudes"
+   b) Filtra por "APROBADAS"
+   c) Deberías ver las que aprobaste
+   d) Filtra por "RECHAZADAS"
+   e) Deberías ver las que rechazaste
+
+
+⚙️ CARACTERÍSTICAS TÉCNICAS
+═══════════════════════════════════════════════════════════════════════════
+
+Almacenamiento:
+  - Los datos se guardan en localStorage
+  - Los cambios de estado se actualizan en tiempo real
+  - No requiere servidor
+
+Seguridad:
+  - Solo admins pueden acceder a la página
+  - Si intentas ingresar sin ser admin, te redirige
+
+Validación:
+  - Solo permite cambiar estado si está en "pendiente"
+  - Confirma la acción antes de cambiar estado
+
+Interfaz:
+  - Diseño consistente con el resto del sistema
+  - Colores indicativos de estado
+  - Estadísticas en tiempo real
+  - Responsive (funciona en móvil, tablet, desktop)
+
+
+📲 INTERFAZ MÓVIL
+═══════════════════════════════════════════════════════════════════════════
+
+La página se adapta perfectamente a dispositivos móviles:
+  ✓ Botones grandes y fáciles de tocar
+  ✓ Texto legible
+  ✓ Layout responsive
+  ✓ Funciona en cualquier resolución
+
+
+🎨 ESTILOS APLICADOS
+═══════════════════════════════════════════════════════════════════════════
+
+Colores:
+  - Oro (#DAA520): Pendiente
+  - Verde (#0f0): Aprobada
+  - Rojo (#f44): Rechazada
+  - Amarillo (#FFD700): Secundario
+
+Efectos:
+  - Sombras al pasar el mouse
+  - Transiciones suaves
+  - Animaciones fluidas
+  - Escalado en botones
+
+
+📈 ESTADÍSTICAS EN TIEMPO REAL
+═══════════════════════════════════════════════════════════════════════════
+
+Las estadísticas se actualizan automáticamente:
+  - Se recalculan cuando apruebas/rechazas
+  - Se sincronizan con el estado actual
+  - Muestran números en tiempo real
+
+
+✅ VALIDACIONES
+═══════════════════════════════════════════════════════════════════════════
+
+La página valida:
+  ✓ Que el usuario sea administrador
+  ✓ Que la reserva exista
+  ✓ Que la reserva esté en estado "pendiente"
+  ✓ Solicita confirmación antes de cambiar estado
+
+
+🔐 CONTROL DE ACCESO
+═══════════════════════════════════════════════════════════════════════════
+
+Si intentas acceder sin ser admin:
+  ✗ Te muestra mensaje de acceso denegado
+  ✗ No puede modificar solicitudes
+  ✗ Se redirige a página de inicio
+
+Si intentas acceder sin estar logueado:
+  ✗ Se redirige automáticamente a login
+
+
+📝 CAMBIOS EN OTRAS PÁGINAS
+═══════════════════════════════════════════════════════════════════════════
+
+index.html:
+  - Agregado botón "Solicitudes" en navegación (solo admins)
+  - Visible solo si el usuario es administrador
+
+admin.html:
+  - Agregado enlace a "Solicitudes" en navegación
+  - Fácil acceso desde el panel
+
+mis_reservas.html:
+  - Las reservas ahora muestran estado "pendiente" inicialmente
+  - El estado cambia a "confirmada" cuando admin la aprueba
+
+
+🚀 PRÓXIMOS PASOS
+═══════════════════════════════════════════════════════════════════════════
+
+Posibles mejoras futuras:
+  - Notificaciones cuando se aprueba/rechaza
+  - Envío de emails (requiere backend)
+  - Búsqueda avanzada
+  - Exportar reportes
+  - Historial de cambios
+
+
+❓ PREGUNTAS FRECUENTES
+═══════════════════════════════════════════════════════════════════════════
+
+P: ¿Dónde veo las solicitudes?
+R: En "Solicitudes" (solo si eres admin)
+
+P: ¿Cómo apruebo una solicitud?
+R: Haz clic en el botón "Aprobar" en verde
+
+P: ¿Qué pasa si rechazo una solicitud?
+R: Cambia a estado "rechazada" y el usuario lo ve en sus reservas
+
+P: ¿Puedo cambiar de parecer?
+R: Actualmente, los cambios son definitivos. Puedes crear una nueva solicitud.
+
+P: ¿Los usuarios ven sus solicitudes?
+R: Sí, en "Mis Reservas" ven el estado (Pendiente, Confirmada, Rechazada)
+
+P: ¿Cuántas solicitudes puedo tener?
+R: Sin límite (depende de localStorage)
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Todo está listo para usar
+📍 Ubicación: Vista Previa/solicitudes.html
+🎯 Acceso: Admin → Solicitudes en el menú
+
+═══════════════════════════════════════════════════════════════════════════

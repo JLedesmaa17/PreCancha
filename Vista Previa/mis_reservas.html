@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas - PRE-CANCHA</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header>
+        <nav>
+            <div class="logo">PRE-CANCHA</div>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="mis_reservas.html" style="color: #FFD700;">Mis Reservas</a></li>
+                <li id="adminLink" style="display: none;">
+                    <a href="admin.html">Panel Admin</a>
+                </li>
+                <li id="userInfo">
+                    <span id="userName"></span>
+                </li>
+                <li id="logoutBtn">
+                    <button onclick="doLogout()" style="background: #DAA520; color: #000; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">Cerrar Sesión</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <h1 style="margin-top: 80px; margin-bottom: 30px;">Mis Reservas</h1>
+
+            <div id="loginRequerido" class="bienvenida" style="background: rgba(255, 68, 68, 0.1); border-color: #f44; display: none;">
+                <h2 style="color: #f44;">Se requiere iniciar sesión</h2>
+                <p>Debes <a href="login.html" style="color: #FFD700; text-decoration: underline;">iniciar sesión</a> para ver tus reservas.</p>
+            </div>
+
+            <!-- Tabs de filtros -->
+            <div class="tabs-filtro" style="display: none;">
+                <button class="tab-btn active" onclick="filtrarReservas('todas')">Todas</button>
+                <button class="tab-btn" onclick="filtrarReservas('confirmada')">Confirmadas</button>
+                <button class="tab-btn" onclick="filtrarReservas('pendiente')">Pendientes</button>
+                <button class="tab-btn" onclick="filtrarReservas('cancelada')">Canceladas</button>
+            </div>
+
+            <!-- Tabla de Reservas -->
+            <div id="tablaContainer" style="display: none;">
+                <table class="tabla-reservas">
+                    <thead>
+                        <tr>
+                            <th>Cancha</th>
+                            <th>Fecha</th>
+                            <th>Horario</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Observaciones</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyTabla">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mensaje sin reservas -->
+            <div id="sinReservas" class="bienvenida" style="display: none; background: rgba(218, 165, 32, 0.15); border-color: #DAA520; text-align: center;">
+                <h2>No tienes reservas</h2>
+                <p><a href="index.html" style="color: #DAA520; text-decoration: underline;">Haz una reserva ahora</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PRE-CANCHA. Todos los derechos reservados. | Sistema de Reservas de Canchas</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        let filtroActual = 'todas';
+
+        function cargarReservas() {
+            if (!session.isLogged()) {
+                document.getElementById('loginRequerido').style.display = 'block';
+                document.getElementById('tablaContainer').style.display = 'none';
+                document.getElementById('sinReservas').style.display = 'none';
+                return;
+            }
+
+            const sesion = session.getSession();
+            document.getElementById('userName').textContent = sesion.nombre;
+
+            if (sesion.rol === 'admin') {
+                document.getElementById('adminLink').style.display = 'block';
+            }
+
+            const reservas = session.getReservasByUsuario(sesion.user_id);
+            const canchas = session.getCanchas();
+
+            if (reservas.length === 0) {
+                document.getElementById('sinReservas').style.display = 'block';
+                document.getElementById('tablaContainer').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('tablaContainer').style.display = 'block';
+            document.querySelector('.tabs-filtro').style.display = 'flex';
+            document.getElementById('sinReservas').style.display = 'none';
+
+            mostrarReservas(reservas, canchas);
+        }
+
+        function mostrarReservas(reservas, canchas) {
+            let reservasFiltradas = reservas;
+
+            if (filtroActual !== 'todas') {
+                reservasFiltradas = reservas.filter(r => r.estado === filtroActual);
+            }
+
+            const tbody = document.getElementById('bodyTabla');
+            tbody.innerHTML = '';
+
+            if (reservasFiltradas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px;">
+                            No hay reservas en esta categoría
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            reservasFiltradas.forEach(reserva => {
+                const cancha = canchas.find(c => c.id === reserva.cancha_id);
+                const estadoColor = {
+                    'confirmada': '#0f0',
+                    'pendiente': '#FFD700',
+                    'cancelada': '#f44'
+                };
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Cancha ${cancha.numero} (${cancha.tipo})</td>
+                    <td>${new Date(reserva.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${reserva.hora_inicio} - ${reserva.hora_fin}</td>
+                    <td>$${cancha.precio}</td>
+                    <td style="color: ${estadoColor[reserva.estado]}; font-weight: bold;">${reserva.estado.toUpperCase()}</td>
+                    <td>${reserva.observaciones || 'Sin observaciones'}</td>
+                    <td>
+                        ${reserva.estado === 'confirmada' || reserva.estado === 'pendiente' ? 
+                            `<button onclick="cancelarReserva(${reserva.id})" class="btn-accion btn-cancelar">Cancelar</button>` 
+                            : 'N/A'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarReservas(filtro) {
+            filtroActual = filtro;
+
+            // Actualizar botones activos
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const sesion = session.getSession();
+            const reservas = session.getReservasByUsuario(sesion.user_id);
+            const canchas = session.getCanchas();
+
+            mostrarReservas(reservas, canchas);
+        }
+
+        function cancelarReserva(reserva_id) {
+            if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+                const resultado = session.cancelarReserva(reserva_id);
+                if (resultado.success) {
+                    alert('Reserva cancelada exitosamente');
+                    cargarReservas();
+                } else {
+                    alert('Error: ' + resultado.message);
+                }
+            }
+        }
+
+        // Cargar contenido al iniciar
+        cargarReservas();
+    </script>
+</body>
+</html>
